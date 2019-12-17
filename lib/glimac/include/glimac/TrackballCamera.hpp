@@ -1,30 +1,28 @@
-#include "common.hpp"
-#include <glm/gtx/transform.hpp>
+#pragma once
 
+#include <cstdint>
+#include <SDL/SDL.h>
+#include "glm.hpp"
+
+namespace glimac {
 
 class TrackballCamera {
-	private :
-	float m_fDistance;
-	float m_fAngleX;
-	float m_fAngleY;
 
-	public :
-	TrackballCamera() : m_fDistance(5), m_fAngleX(0), m_fAngleY(0) {}
+	private:
+	    float m_fDistance; // distance par rapport au centre de la scène
+	    float m_fAngleX; // l'angle effectuée par la caméra autour de l'axe x de la scène (rotation vers le haut ou vers le bas)
+	    float m_fAngleY; // l'angle effectuée par la caméra autour de l'axe y de la scène (rotation vers la gauche ou vers la droite)
 
-	void moveFront(float delta) {
-		m_fDistance += delta;
-	}
-	void rotateLeft(float degrees) {
-		m_fAngleY += degrees;
-	}
-	void rotateUp(float degrees) {
-		m_fAngleX += degrees;
-	}
+	public:
 
-	glm::mat4 getViewMatrix() const {
-		glm::mat4 viewMatrix = glm::translate(glm::vec3(0, 0, -m_fDistance));
-		viewMatrix = glm::rotate(viewMatrix, glm::radians(m_fAngleX), glm::vec3(1, 0, 0));
-		viewMatrix = glm::rotate(viewMatrix, glm::radians(m_fAngleY), glm::vec3(0, 1, 0));
-		return viewMatrix;
-	}
-};
+		TrackballCamera(); // Constructeur
+	   ~TrackballCamera(); // Destructeur
+
+	    void moveFront(float delta); // permettant d'avancer / reculer la caméra. Lorsque delta est positif la caméra doit avancer, sinon elle doit reculer.
+	    void rotateLeft(float degrees); // permettant de tourner latéralement autour du centre de vision.
+	    void rotateUp(float degrees); //permettant de tourner verticalement autour du centre de vision.
+
+	    glm::mat4 getViewMatrix() const;
+	};
+
+}
