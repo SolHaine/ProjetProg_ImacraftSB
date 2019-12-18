@@ -66,3 +66,4 @@ target_link_libraries(${PROJECT_NAME} ${ALL_LIBRARIES})
 ######################################################################################
 
 file(COPY src/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

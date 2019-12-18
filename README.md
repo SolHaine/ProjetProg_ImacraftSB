@@ -2,7 +2,7 @@
 
 Éditeur-visualiseur de terrain et de scène en 3D, dans le cadre de la formation ingénieur IMAC.
 
-*https://github.com/BaptisteOry/projet_towerDefense*
+*https://github.com/SolHaine/ProjetProg_ImacraftSB*
 
 ## Prérequis
 
