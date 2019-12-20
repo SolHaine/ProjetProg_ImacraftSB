@@ -9,10 +9,11 @@
 #include <iostream>
 
 #include "../include/Cube.hpp"
+#include "../include/Scene.hpp"
 
 using namespace glimac;
 
-struct Scene {
+struct ProgramScene {
     Program m_Program;
 
     GLint uMVMatrix;
@@ -21,7 +22,7 @@ struct Scene {
     GLint uTexture;
     GLint uTexture2;
 
-    Scene(const FilePath& applicationPath):
+    ProgramScene(const FilePath& applicationPath):
         m_Program(loadProgram(applicationPath.dirPath() + "shaders/3D.vs.glsl",
                               applicationPath.dirPath() + "shaders/normals.fs.glsl")) {
         uMVPMatrix = glGetUniformLocation(m_Program.getGLId(), "uMVPMatrix");
@@ -45,7 +46,7 @@ int main(int argc, char** argv) {
 
     // Load, compile and use shaders
     FilePath applicationPath(argv[0]);
-    Scene scene(applicationPath);
+    ProgramScene programScene(applicationPath);
 
     // Versions
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
@@ -87,7 +88,7 @@ int main(int argc, char** argv) {
     /*********************************
      * INITIALIZATION CODE
      *********************************/
-    Cube cube;
+    Scene scene;
 
     /*********************************
     * APPLICATION LOOP
@@ -174,34 +175,35 @@ int main(int argc, char** argv) {
         /* --------- Scene --------- */
 
         // Choose program
-        scene.m_Program.use();
+        programScene.m_Program.use();
 
         // Set uniform objects
-        glUniform1i(scene.uTexture, 0);
-        glUniform1i(scene.uTexture2, 1);
+        glUniform1i(programScene.uTexture, 0);
+        glUniform1i(programScene.uTexture2, 1);
 
         // Definition of scene model matrix
         glm::mat4 MMatrix;
-        MMatrix = glm::rotate(MMatrix, 90.0f, glm::vec3(0, 1, 0)); // Rotation
+        //MMatrix = glm::rotate(MMatrix, 90.0f, glm::vec3(0, 1, 0)); // Rotation
         // Send matrix
         glm::mat4 ViewMatrix = Camera.getViewMatrix();
         glm::mat4 MVMatrix = ViewMatrix * MMatrix;
-        glUniformMatrix4fv(scene.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
-        glUniformMatrix4fv(scene.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
-        glUniformMatrix4fv(scene.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+        glUniformMatrix4fv(programScene.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
+        glUniformMatrix4fv(programScene.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
+        glUniformMatrix4fv(programScene.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
 
         // Draw with textures
-        glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textureObject);
-                cube.drawCube();
-        glBindTexture(GL_TEXTURE_2D, 0);
+        scene.drawScene();
+        //scene.addCube(glm::vec3(-2, -1, -3));
+        //scene.addCube(glm::vec3( 0, -1, -3));
+        //scene.addCube(glm::vec3( 2, -1, -3));
+        //scene.addCube(glm::vec3( 0,  1, -3));
 
         // Update the display
         windowManager.swapBuffers();
     }
 
     // Free resources
-    cube.freeBuffersCube();
+    scene.freeBuffersScene();
     glDeleteTextures(1, &textureObject);
 
     return EXIT_SUCCESS;

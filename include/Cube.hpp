@@ -1,23 +1,24 @@
 #pragma once
 #include <glimac/common.hpp>
-#include <vector>
 #include <iostream>
+#include <vector>
 
 using namespace glimac;
 
 class Cube {
 
     private:
-        std::vector<glimac::ShapeVertex> vertices;
-        GLuint vao;
-        GLuint vbo;
-        GLuint ibo;
+        GLuint c_vbo;
+        GLuint c_ibo;
+        GLuint c_vao;
+        std::vector<ShapeVertex> c_vertices;
 
     public:
         Cube();
         ~Cube();
         void drawCube();
         void freeBuffersCube();
+        GLuint getCVao();
 
 };
         
