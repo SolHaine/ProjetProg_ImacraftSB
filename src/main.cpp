@@ -10,6 +10,7 @@
 
 #include "../include/Cube.hpp"
 #include "../include/Scene.hpp"
+#include "../include/Cursor.hpp"
 
 using namespace glimac;
 
@@ -33,6 +34,24 @@ struct ProgramScene {
     }
 };
 
+struct ProgramCursor {
+    Program m_Program;
+
+    GLint uMVMatrix;
+    GLint uMVPMatrix;
+    GLint uNormalMatrix;
+    GLint uCursorPosition;
+
+    ProgramCursor(const FilePath& applicationPath):
+        m_Program(loadProgram(applicationPath.dirPath() + "shaders/cursor.vs.glsl",
+                              applicationPath.dirPath() + "shaders/cursor.fs.glsl")) {
+        uMVPMatrix = glGetUniformLocation(m_Program.getGLId(), "uMVPMatrix");
+        uMVMatrix = glGetUniformLocation(m_Program.getGLId(), "uMVMatrix");
+        uNormalMatrix = glGetUniformLocation(m_Program.getGLId(), "uNormalMatrix");
+        uCursorPosition = glGetUniformLocation(m_Program.getGLId(), "uCursorPosition");
+    }
+};
+
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
     SDLWindowManager windowManager(800, 600, "ImacraftSB");
@@ -47,6 +66,7 @@ int main(int argc, char** argv) {
     // Load, compile and use shaders
     FilePath applicationPath(argv[0]);
     ProgramScene programScene(applicationPath);
+    ProgramCursor programCursor(applicationPath);
 
     // Versions
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
@@ -89,6 +109,8 @@ int main(int argc, char** argv) {
      * INITIALIZATION CODE
      *********************************/
     Scene scene;
+    Cursor cursor;
+    std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
 
     /*********************************
     * APPLICATION LOOP
@@ -130,6 +152,42 @@ int main(int argc, char** argv) {
                     break;
                     // E key to move down
                     case SDLK_e: ePressed = true;
+                    break;
+                    // O key to move cursor forward
+                    case SDLK_o: cursor.moveFront(1);
+                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+                                cursor.getCubeInScene(scene);
+
+                    break;
+                    // L key to move cursor backward
+                    case SDLK_l: cursor.moveFront(-1);
+                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+                                cursor.getCubeInScene(scene);
+
+                    break;
+                    // K key to move cursor forward
+                    case SDLK_k: cursor.moveLeft(1);
+                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+                                cursor.getCubeInScene(scene);
+
+                    break;
+                    // M key to move cussor backward
+                    case SDLK_m: cursor.moveLeft(-1);
+                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+                                cursor.getCubeInScene(scene);
+
+                    break;
+                    // I key to move cursor up
+                    case SDLK_i: cursor.moveUp(1);
+                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+                                cursor.getCubeInScene(scene);
+
+                    break;
+                    // P key to move cursor down
+                    case SDLK_p: cursor.moveUp(-1);
+                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+                                cursor.getCubeInScene(scene);
+
                     break;
 
                     default: 
@@ -181,6 +239,9 @@ int main(int argc, char** argv) {
         glUniform1i(programScene.uTexture, 0);
         glUniform1i(programScene.uTexture2, 1);
 
+        // Activate depth
+        glEnable(GL_DEPTH_TEST);
+
         // Definition of scene model matrix
         glm::mat4 MMatrix;
         //MMatrix = glm::rotate(MMatrix, 90.0f, glm::vec3(0, 1, 0)); // Rotation
@@ -198,12 +259,25 @@ int main(int argc, char** argv) {
         //scene.addCube(glm::vec3( 2, -1, -3));
         //scene.addCube(glm::vec3( 0,  1, -3));
 
+        programCursor.m_Program.use();
+
+        glUniformMatrix4fv(programCursor.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
+        glUniformMatrix4fv(programCursor.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
+        glUniformMatrix4fv(programCursor.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+        glUniform3f(programCursor.uCursorPosition, cursor.getPosition().x, cursor.getPosition().y, cursor.getPosition().z);
+
+        // Desactivate depth
+        glDisable(GL_DEPTH_TEST);
+
+        cursor.drawSelection();
+
         // Update the display
         windowManager.swapBuffers();
     }
 
     // Free resources
     scene.freeBuffersScene();
+    cursor.freeBuffers();
     glDeleteTextures(1, &textureObject);
 
     return EXIT_SUCCESS;
