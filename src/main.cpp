@@ -4,7 +4,6 @@
 #include <glimac/Program.hpp>
 #include <glimac/FilePath.hpp>
 #include <glimac/Image.hpp>
-#include <glimac/FreeFlyCamera.hpp>
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_opengl3.h>
@@ -15,6 +14,7 @@
 #include "../include/Cube.hpp"
 #include "../include/Scene.hpp"
 #include "../include/Interface.hpp"
+#include "../include/FreeFlyCamera.hpp"
 
 using namespace glimac;
 
