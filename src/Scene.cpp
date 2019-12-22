@@ -1,5 +1,4 @@
 #include "../include/Scene.hpp"
-#include "../include/Cube.hpp"
 
 Scene::Scene() {
 
@@ -15,7 +14,6 @@ Scene::Scene() {
     }
     
     // Create VAO (Vertex Array Object)
-    Cube cube;
     s_vao = cube.getCVao();
     // Bind VAO
     glBindVertexArray(s_vao);
@@ -33,6 +31,8 @@ Scene::Scene() {
 }
 
 Scene::~Scene() {
+    glDeleteVertexArrays(1, &s_vao);
+    glDeleteBuffers(1, &s_vbo);
 };
 
 void Scene::drawScene(){
@@ -49,28 +49,61 @@ void Scene::updateScene(){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Scene::addCube(glm::vec3 position){
-    removeCube(position);
-    s_cubesPositions.push_back(position);
-    updateScene();
-}
-
 int Scene::findCube(glm::vec3 position){
-    for(int i=0; i < s_cubesPositions.size(); ++i){
+    for(int i = 0; i < s_cubesPositions.size(); ++i){
         if(glm::length(position-s_cubesPositions[i]) < 0.1f){
             return i;
         }
     }
-    return -1; // if we didn't find it
+    return -1; // -1 if we didn't find it
 }
 
-void Scene::removeCube(glm::vec3 position){
+int Scene::getHighestCubeColumn(glm::vec3 position){
+    int index = -1;
+    for(int i = 0; i < s_cubesPositions.size(); ++i){
+        if((position.x == s_cubesPositions[i].x) && (position.z == s_cubesPositions[i].z)){
+            if(index == -1){
+                position.y = s_cubesPositions[i].y;
+                index = i;
+            }
+            if((position.y < s_cubesPositions[i].y)){
+                index = i;
+            }
+        }
+    }
+    return index; // -1 if we didn't find it
+}
+
+void Scene::addCube(glm::vec3 position){
+    deleteCube(position);
+    s_cubesPositions.push_back(position);
+    updateScene();
+}
+
+void Scene::deleteCube(glm::vec3 position){
     int index = findCube(position);
     if(index != -1){
         int lastIndex = s_cubesPositions.size() - 1;
         std::swap(s_cubesPositions[index], s_cubesPositions[lastIndex]);
         s_cubesPositions.pop_back();
         updateScene();
+    }
+}
+
+void Scene::extrudeCube(glm::vec3 position){
+    int index = getHighestCubeColumn(position);
+    if(index != -1){
+        position = s_cubesPositions[index];
+        (position.y)++;
+        addCube(position);
+    }
+}
+
+void Scene::digCube(glm::vec3 position){
+    int index = getHighestCubeColumn(position);
+    if(index != -1){
+        position = s_cubesPositions[index];
+        deleteCube(position);
     }
 }
 
