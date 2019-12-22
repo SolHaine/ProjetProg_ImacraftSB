@@ -1,7 +1,12 @@
 #pragma once
-#include "glimac/glm.hpp"
 
-class FreeFlyCamera{
+#include <glimac/common.hpp>
+
+#include <math.h>
+
+using namespace glimac;
+
+class FreeFlyCamera {
 
 	public:
 		FreeFlyCamera();
@@ -20,6 +25,7 @@ class FreeFlyCamera{
 		float m_fTheta;
 
 		glm::vec3 m_FrontVector;
+		glm::vec3 m_FrontVectorFixed;
 		glm::vec3 m_LeftVector;
 		glm::vec3 m_UpVector;
 

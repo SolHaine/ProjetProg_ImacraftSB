@@ -3,11 +3,14 @@
 #include <vector>
 #include <iostream>
 
+#include "../include/Cube.hpp"
+
 using namespace glimac;
 
 class Scene {
 
     private:
+        Cube cube;
         GLuint s_vbo;
         GLuint s_vao;
         std::vector<glm::vec3> s_cubesPositions;
@@ -17,9 +20,12 @@ class Scene {
         ~Scene();
         void drawScene();
         void updateScene();
-        void addCube(glm::vec3 position);
         int findCube(glm::vec3 position);
-        void removeCube(glm::vec3 position);
+        int getHighestCubeColumn(glm::vec3 position);
+        void deleteCube(glm::vec3 position);
+        void addCube(glm::vec3 position);
+        void extrudeCube(glm::vec3 position);
+        void digCube(glm::vec3 position);
         void freeBuffersScene();
 
 };

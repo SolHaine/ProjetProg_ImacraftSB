@@ -4,13 +4,18 @@
 #include <glimac/Program.hpp>
 #include <glimac/FilePath.hpp>
 #include <glimac/Image.hpp>
-#include <glimac/FreeFlyCamera.hpp>
+
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_opengl3.h>
+#include <imgui/imgui_impl_sdl.h>
 
 #include <iostream>
 
 #include "../include/Cube.hpp"
 #include "../include/Scene.hpp"
 #include "../include/Cursor.hpp"
+#include "../include/Interface.hpp"
+#include "../include/FreeFlyCamera.hpp"
 
 using namespace glimac;
 
@@ -54,7 +59,7 @@ struct ProgramCursor {
 
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
-    SDLWindowManager windowManager(800, 600, "ImacraftSB");
+    SDLWindowManager windowManager(1024, 768, "ImacraftSB");
 
     // Initialize glew for OpenGL3+ support
     GLenum glewInitError = glewInit();
@@ -111,6 +116,8 @@ int main(int argc, char** argv) {
     Scene scene;
     Cursor cursor;
     std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+    Interface interface;
+    interface.initImgui(windowManager.window, &windowManager.openglContext);
 
     /*********************************
     * APPLICATION LOOP
@@ -254,10 +261,10 @@ int main(int argc, char** argv) {
 
         // Draw with textures
         scene.drawScene();
-        //scene.addCube(glm::vec3(-2, -1, -3));
-        //scene.addCube(glm::vec3( 0, -1, -3));
-        //scene.addCube(glm::vec3( 2, -1, -3));
-        //scene.addCube(glm::vec3( 0,  1, -3));
+
+        interface.beginFrame(windowManager.window);
+        interface.drawInterface(scene);
+        interface.endFrame(windowManager.window);
 
         programCursor.m_Program.use();
 
@@ -273,6 +280,7 @@ int main(int argc, char** argv) {
 
         // Update the display
         windowManager.swapBuffers();
+
     }
 
     // Free resources

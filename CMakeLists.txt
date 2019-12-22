@@ -30,29 +30,27 @@ file(GLOB_RECURSE SHADER_FILES shaders/*.glsl)
 ######################################################################################
 
 find_package(OpenGL REQUIRED)
-find_package(SDL REQUIRED)
+#find_package(SDL REQUIRED)
+find_package(SDL2 REQUIRED)
 find_package(GLEW REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 ######################################################################################
 ###################################### Includes ######################################
 ######################################################################################
 
-#### --------------- Necessary in order to run on Apple's laptop ---------------- ####
-if (APPLE)
-    include_directories(/usr/local/include)
-    set(GLEW_LIBRARY /usr/local/lib/libGLEW.dylib)
-endif (APPLE)
-
 include_directories(
-        ${SDL_INCLUDE_DIRS}
+        ${SDL2_INCLUDE_DIRS}
         ${OPENGL_INCLUDE_DIR}
         ${GLEW_INCLUDE_DIRS}
         lib/glimac/include 
+        lib/imgui/include 
         lib/glm/include
         )
 
-set(ALL_LIBRARIES glimac ${SDL_LIBRARY} ${OPENGL_LIBRARIES} ${GLEW_LIBRARY})
 add_subdirectory(lib/glimac)
+add_subdirectory(lib/imgui)
+set(ALL_LIBRARIES glimac imgui ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${EIGEN3_INCLUDE_DIR})
 
 ######################################################################################
 ########################### Declaration of .exe  #####################################
