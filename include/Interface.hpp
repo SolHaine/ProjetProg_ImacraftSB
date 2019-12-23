@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "../include/Scene.hpp"
+#include "../include/Cursor.hpp"
 
 class Interface {
 
@@ -17,7 +18,7 @@ class Interface {
 		~Interface();
 		void initImgui(SDL_Window* window, SDL_GLContext* glContext) const;
 		void beginFrame(SDL_Window* window) const;
-		void drawInterface(Scene &scene);
+		void drawInterface(Scene &scene, const Cursor &cursor);
 		void endFrame(SDL_Window* window) const;
 
 	private:

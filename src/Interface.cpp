@@ -29,7 +29,7 @@
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void Interface::drawInterface(Scene &scene) {
+    void Interface::drawInterface(Scene &scene, const Cursor &cursor) {
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
                 if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
@@ -52,19 +52,19 @@
 
             ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x*0.75f, 0.0f);
             if (ImGui::Button("Create cube", sizeButtons)) {
-                scene.addCube(glm::vec3(1, 0, 1));
+                scene.addCube(cursor.getPosition());
             }
 
             if (ImGui::Button("Delete cube", sizeButtons)) {
-                scene.deleteCube(glm::vec3(1, 0, 1));
+                scene.deleteCube(cursor.getPosition());
             }
 
             if (ImGui::Button("Extrude cube", sizeButtons)) {
-                scene.extrudeCube(glm::vec3(1, 0, 1));
+                scene.extrudeCube(cursor.getPosition());
             }
 
             if (ImGui::Button("Dig cube", sizeButtons)) {
-                scene.digCube(glm::vec3(1, 0, 1));
+                scene.digCube(cursor.getPosition());
             }
             ImGui::End();
 

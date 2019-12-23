@@ -160,41 +160,35 @@ int main(int argc, char** argv) {
                     // E key to move down
                     case SDLK_e: ePressed = true;
                     break;
-                    // O key to move cursor forward
-                    case SDLK_o: cursor.moveFront(1);
+                    // O key to move cursor backwards
+                    case SDLK_o: cursor.moveFront(-1);
                                 std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
                                 cursor.getCubeInScene(scene);
-
                     break;
-                    // L key to move cursor backward
-                    case SDLK_l: cursor.moveFront(-1);
+                    // L key to move cursor forward
+                    case SDLK_l: cursor.moveFront(1);
                                 std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
                                 cursor.getCubeInScene(scene);
-
                     break;
-                    // K key to move cursor forward
+                    // K key to move cursor left
                     case SDLK_k: cursor.moveLeft(1);
                                 std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
                                 cursor.getCubeInScene(scene);
-
                     break;
-                    // M key to move cussor backward
+                    // M key to move cussor right
                     case SDLK_m: cursor.moveLeft(-1);
                                 std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
                                 cursor.getCubeInScene(scene);
-
                     break;
                     // I key to move cursor up
                     case SDLK_i: cursor.moveUp(1);
                                 std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
                                 cursor.getCubeInScene(scene);
-
                     break;
                     // P key to move cursor down
                     case SDLK_p: cursor.moveUp(-1);
                                 std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
                                 cursor.getCubeInScene(scene);
-
                     break;
 
                     default: 
@@ -263,7 +257,7 @@ int main(int argc, char** argv) {
         scene.drawScene();
 
         interface.beginFrame(windowManager.window);
-        interface.drawInterface(scene);
+        interface.drawInterface(scene, cursor);
         interface.endFrame(windowManager.window);
 
         programCursor.m_Program.use();

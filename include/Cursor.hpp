@@ -17,13 +17,12 @@ class Cursor {
 	public:
 		Cursor();
 		~Cursor();
-		glm::vec3 getPosition();
-		void getCubeInScene(Scene s);
+		glm::vec3 getPosition() const;
+		void getCubeInScene(Scene &s);
 		void drawSelection();
-		void updateSelection();
-		void moveFront(float t);
-		void moveLeft(float t);
-		void moveUp(float t);
+		void moveFront(const float t);
+		void moveLeft(const float t);
+		void moveUp(const float t);
 		void freeBuffers();
 	
 };

@@ -84,12 +84,12 @@ Cursor::~Cursor() {
 
 }
 
-glm::vec3 Cursor::getPosition() {
+glm::vec3 Cursor::getPosition() const {
 	// std::cout << "Cursor position : " << c_position << std::endl;
 	return c_position;
 }
 
-void Cursor::getCubeInScene(Scene s) {
+void Cursor::getCubeInScene(Scene &s) {
 	int cubePosition = s.findCube(c_position);
 	// std::cout << "Cursor position : " << c_position << std::endl;
 	if(cubePosition != -1) {
@@ -105,15 +105,15 @@ void Cursor::drawSelection() {
     glBindVertexArray(0);
 }
 
-void Cursor::moveFront(float t) {
-	c_position.z -= t;
+void Cursor::moveFront(const float t) {
+	c_position.z += t;
 }
 
-void Cursor::moveLeft(float t) {
+void Cursor::moveLeft(const float t) {
 	c_position.x -= t;
 }
 
-void Cursor::moveUp(float t) {
+void Cursor::moveUp(const float t) {
 	c_position.y += t;
 }
 
