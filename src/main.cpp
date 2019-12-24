@@ -232,6 +232,10 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // Activate depth
         glEnable(GL_DEPTH_TEST);
+        // Definition of scene model matrix
+        glm::mat4 MMatrix;
+        glm::mat4 ViewMatrix = Camera.getViewMatrix();
+        glm::mat4 MVMatrix = ViewMatrix * MMatrix;
 
         /* --------- Scene --------- */
 
@@ -240,22 +244,12 @@ int main(int argc, char** argv) {
         // Set uniform objects
         glUniform1i(programScene.uTexture, 0);
         glUniform1i(programScene.uTexture2, 1);
-        // Definition of scene model matrix
-        glm::mat4 MMatrix;
-        glm::mat4 ViewMatrix = Camera.getViewMatrix();
-        glm::mat4 MVMatrix = ViewMatrix * MMatrix;
         // Send matrix
         glUniformMatrix4fv(programScene.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(programScene.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
         glUniformMatrix4fv(programScene.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
         // Draw scene
         scene.drawScene();
-
-        /* --------- Interface --------- */
-
-        interface.beginFrame(windowManager.window);
-        interface.drawInterface(scene, cursor);
-        interface.endFrame(windowManager.window);
 
         /* --------- Cursor --------- */
 
@@ -270,6 +264,12 @@ int main(int argc, char** argv) {
         glUniform3f(programCursor.uCursorPosition, cursor.getPosition().x, cursor.getPosition().y, cursor.getPosition().z);
         // Draw curosr
         cursor.drawCursor();
+
+        /* --------- Interface --------- */
+
+        interface.beginFrame(windowManager.window);
+        interface.drawInterface(scene, cursor);
+        interface.endFrame(windowManager.window);
 
 
         // Update the display

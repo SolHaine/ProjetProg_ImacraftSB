@@ -12,10 +12,15 @@ Scene::Scene() {
         // Enable scene position attribute VAO
         const GLuint VERTEX_ATTR_SCENEPOSITION = 1;
         glEnableVertexAttribArray(VERTEX_ATTR_SCENEPOSITION);
+        // Enable color attribute VAO
+        const GLuint VERTEX_ATTR_COLOR = 4;
+        glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
         // Specify the format of the vertex
         glBindBuffer(GL_ARRAY_BUFFER, s_vbo);
-            glVertexAttribPointer(VERTEX_ATTR_SCENEPOSITION, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0); // Position
+            glVertexAttribPointer(VERTEX_ATTR_SCENEPOSITION, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertexScene), (const GLvoid*)offsetof(ShapeVertexScene, s_cubesPositions)); // Position
             glVertexAttribDivisor(1, 1);
+            glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertexScene), (const GLvoid*)offsetof(ShapeVertexScene, s_cubesColors)); // Color
+            glVertexAttribDivisor(4, 1);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     //Debind VAO
     glBindVertexArray(0);
@@ -36,7 +41,7 @@ Scene::~Scene() {
 
 void Scene::drawScene(){
     glBindVertexArray(s_vao);
-        glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, s_cubesPositions.size());
+        glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, s_vertices.size());
     glBindVertexArray(0);
 };
 
@@ -44,13 +49,13 @@ void Scene::updateScene(){
     // Bind VBO
     glBindBuffer(GL_ARRAY_BUFFER, s_vbo);
         // Update vertices of the VBO
-        glBufferData(GL_ARRAY_BUFFER, s_cubesPositions.size() * sizeof(glm::vec3), s_cubesPositions.size() > 0 ? &(s_cubesPositions)[0] : nullptr, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, s_vertices.size() * sizeof(ShapeVertexScene), s_vertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 int Scene::findCube(glm::vec3 position){
-    for(int i = 0; i < s_cubesPositions.size(); ++i){
-        if(glm::length(position-s_cubesPositions[i]) < 0.1f){
+    for(int i = 0; i < s_vertices.size(); ++i){
+        if(glm::length(position-s_vertices[i].s_cubesPositions) < 0.1f){
             return i;
         }
     }
@@ -59,10 +64,10 @@ int Scene::findCube(glm::vec3 position){
 
 int Scene::getHighestCubeColumn(glm::vec3 position){
     int index = -1;
-    for(int i = 0; i < s_cubesPositions.size(); ++i){
-        if((position.x == s_cubesPositions[i].x) && (position.z == s_cubesPositions[i].z)){
-            if((index == -1) || (position.y < s_cubesPositions[i].y)){
-                position.y = s_cubesPositions[i].y;
+    for(int i = 0; i < s_vertices.size(); ++i){
+        if((position.x == s_vertices[i].s_cubesPositions.x) && (position.z == s_vertices[i].s_cubesPositions.z)){
+            if((index == -1) || (position.y < s_vertices[i].s_cubesPositions.y)){
+                position.y = s_vertices[i].s_cubesPositions.y;
                 index = i;
             }
         }
@@ -70,20 +75,18 @@ int Scene::getHighestCubeColumn(glm::vec3 position){
     return index; // -1 if we didn't find it
 }
 
-void Scene::addCube(glm::vec3 position){
-    int index = findCube(position);
-    if(index == -1){
-        s_cubesPositions.push_back(position);
-        updateScene();
-    }
+void Scene::addCube(glm::vec3 position, glm::vec3 color){
+    deleteCube(position);
+    s_vertices.push_back({position, color});
+    updateScene();
 }
 
 void Scene::deleteCube(glm::vec3 position){
     int index = findCube(position);
     if(index != -1){
-        std::swap(s_cubesPositions[index], s_cubesPositions[s_cubesPositions.size() - 1]);
-        s_cubesPositions.pop_back();
-        //s_cubesPositions.erase(s_cubesPositions.begin() + index);
+        std::swap(s_vertices[index], s_vertices[s_vertices.size() - 1]);
+        s_vertices.pop_back();
+        //s_vertices.erase(s_vertices.begin() + index);
         updateScene();
     }
 }
@@ -91,17 +94,31 @@ void Scene::deleteCube(glm::vec3 position){
 void Scene::extrudeCube(glm::vec3 position){
     int index = getHighestCubeColumn(position);
     if(index != -1){
-        position = s_cubesPositions[index];
+        position = s_vertices[index].s_cubesPositions;
+        glm::vec3 color = s_vertices[index].s_cubesColors;
         (position.y)++;
-        addCube(position);
+        addCube(position, color);
     }
 }
 
 void Scene::digCube(glm::vec3 position){
     int index = getHighestCubeColumn(position);
     if(index != -1){
-        position = s_cubesPositions[index];
+        position = s_vertices[index].s_cubesPositions;
         deleteCube(position);
+    }
+}
+
+void Scene::changeColorCube(glm::vec3 position, glm::vec3 color){
+    int index = findCube(position);
+    if(index != -1) {
+        //std::cout << color << std::endl;
+        //std::cout << s_vertices[index].s_cubesColors << std::endl;
+        s_vertices[index].s_cubesColors = color;
+        for(int i = 0; i < s_vertices.size(); ++i){
+            std::cout << s_vertices[i].s_cubesColors << std::endl;
+        }
+        updateScene();
     }
 }
 

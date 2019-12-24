@@ -21,6 +21,8 @@ class Interface {
 		void drawInterface(Scene &scene, const Cursor &cursor);
 		void endFrame(SDL_Window* window) const;
 
+		ImVec4 color;
+
 	private:
 		
 

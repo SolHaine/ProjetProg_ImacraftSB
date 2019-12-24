@@ -13,7 +13,12 @@ class Scene {
         Cube cube;
         GLuint s_vbo;
         GLuint s_vao;
-        std::vector<glm::vec3> s_cubesPositions;
+
+        struct ShapeVertexScene { 
+            glm::vec3 s_cubesPositions;
+            glm::vec3 s_cubesColors;
+        };
+        std::vector<ShapeVertexScene> s_vertices;
 
     public:
         Scene();
@@ -23,9 +28,10 @@ class Scene {
         int findCube(glm::vec3 position);
         int getHighestCubeColumn(glm::vec3 position);
         void deleteCube(glm::vec3 position);
-        void addCube(glm::vec3 position);
+        void addCube(glm::vec3 position, glm::vec3 color = glm::vec3(0, 0, 0));
         void extrudeCube(glm::vec3 position);
         void digCube(glm::vec3 position);
+        void changeColorCube(glm::vec3 position, glm::vec3 color);
         void freeBuffersScene();
 
 };

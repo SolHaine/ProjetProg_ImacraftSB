@@ -1,13 +1,19 @@
 #version 330
 
 // Shader inputs
-in vec3 vPosition_vs;
-in vec3 vNormal_vs;
+in vec3 vPosition;
+in vec3 vNormal;
 in vec2 vTexCoords;
+in vec3 vColor;
 
 // Shader outputs
 out vec3 fFragColor;
 
 void main() {
-	fFragColor = vec3(normalize(vNormal_vs));
+	if(vColor == vec3(0, 0, 0)) {
+		fFragColor = vec3(normalize(vNormal));
+	} else {
+		fFragColor = vColor;
+	}
+	 
 }
