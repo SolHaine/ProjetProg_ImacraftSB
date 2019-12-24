@@ -8,21 +8,21 @@
 class Cursor {
 
 	private:
-		glm::vec3 c_position;
-		GLuint c_vbo;
-        GLuint c_ibo;
-        GLuint c_vao;
-        std::vector<glm::vec3> c_vertices;
+		glm::vec3 r_position;
+		GLuint r_vbo;
+        GLuint r_ibo;
+        GLuint r_vao;
+        std::vector<glm::vec3> r_vertices;
 
 	public:
 		Cursor();
 		~Cursor();
 		glm::vec3 getPosition() const;
 		void getCubeInScene(Scene &s);
-		void drawSelection();
+		void drawCursor();
 		void moveFront(const float t);
 		void moveLeft(const float t);
 		void moveUp(const float t);
-		void freeBuffers();
+		void freeBuffersCursor();
 	
 };

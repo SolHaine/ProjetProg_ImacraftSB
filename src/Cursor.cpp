@@ -1,11 +1,11 @@
 #include "../include/Cursor.hpp"
 #include "../include/Scene.hpp"
 
-Cursor::Cursor() : c_position(glm::vec3(0, 0, 0)) {
+Cursor::Cursor() : r_position(glm::vec3(0, 0, 0)) {
 	// Create VBO (Vertex Buffer Object)
-    glGenBuffers(1, &c_vbo);
+    glGenBuffers(1, &r_vbo);
     // Bind VBO
-    glBindBuffer(GL_ARRAY_BUFFER, c_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, r_vbo);
         // Fill VBO with vertices
         //    v6----- v5
         //   /|      /|
@@ -14,7 +14,7 @@ Cursor::Cursor() : c_position(glm::vec3(0, 0, 0)) {
         //  | |v7---|-|v4
         //  |/      |/
         //  v2------v3
-        c_vertices = { 
+        r_vertices = { 
             // v0
             glm::vec3(0.5f, 0.5f, 0.5f),
             // v1
@@ -33,14 +33,14 @@ Cursor::Cursor() : c_position(glm::vec3(0, 0, 0)) {
             glm::vec3(-0.5f, -0.5f, -0.5f)
         };
 
-        glBufferData(GL_ARRAY_BUFFER, c_vertices.size() * sizeof(glm::vec3), c_vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, r_vertices.size() * sizeof(glm::vec3), r_vertices.data(), GL_STATIC_DRAW);
     // Debind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Create IBO (Index Buffer Objects)
-    glGenBuffers(1, &c_ibo);
+    glGenBuffers(1, &r_ibo);
     // Bind IBO
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, c_ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_ibo);
         // Fill IBO with index
         //    v6----- v5
         //   /|      /|
@@ -64,16 +64,16 @@ Cursor::Cursor() : c_position(glm::vec3(0, 0, 0)) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // Create VAO (Vertex Array Object)
-    glGenVertexArrays(1, &c_vao);
+    glGenVertexArrays(1, &r_vao);
     // Bind VAO
-    glBindVertexArray(c_vao);
+    glBindVertexArray(r_vao);
         //Save IBO in VAO
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, c_ibo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_ibo);
         // Enable position attribute VAO
         const GLuint VERTEX_ATTR_POSITION = 0;
         glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
         // Specify the format of the vertex
-        glBindBuffer(GL_ARRAY_BUFFER, c_vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, r_vbo);
             glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GL_FLOAT), 0); // Position
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     //Debind VAO
@@ -81,17 +81,15 @@ Cursor::Cursor() : c_position(glm::vec3(0, 0, 0)) {
 }
 
 Cursor::~Cursor() {
-
 }
 
 glm::vec3 Cursor::getPosition() const {
-	// std::cout << "Cursor position : " << c_position << std::endl;
-	return c_position;
+	return r_position;
 }
 
 void Cursor::getCubeInScene(Scene &s) {
-	int cubePosition = s.findCube(c_position);
-	// std::cout << "Cursor position : " << c_position << std::endl;
+	int cubePosition = s.findCube(r_position);
+	// std::cout << "Cursor position : " << r_position << std::endl;
 	if(cubePosition != -1) {
 		// highlight the cube
 		std::cout << "Cursor on cube " << cubePosition << std::endl;
@@ -99,26 +97,26 @@ void Cursor::getCubeInScene(Scene &s) {
 	else std::cout << "Cursor not on a cube" << std::endl;
 }
 
-void Cursor::drawSelection() {
-	glBindVertexArray(c_vao);
+void Cursor::drawCursor() {
+	glBindVertexArray(r_vao);
         glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
 void Cursor::moveFront(const float t) {
-	c_position.z += t;
+	r_position.z += t;
 }
 
 void Cursor::moveLeft(const float t) {
-	c_position.x -= t;
+	r_position.x -= t;
 }
 
 void Cursor::moveUp(const float t) {
-	c_position.y += t;
+	r_position.y += t;
 }
 
-void Cursor::freeBuffers() {
-    glDeleteVertexArrays(1, &c_vao);
-    glDeleteBuffers(1, &c_ibo);
-    glDeleteBuffers(1, &c_vbo);
+void Cursor::freeBuffersCursor() {
+    glDeleteVertexArrays(1, &r_vao);
+    glDeleteBuffers(1, &r_ibo);
+    glDeleteBuffers(1, &r_vbo);
 }

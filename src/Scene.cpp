@@ -4,14 +4,6 @@ Scene::Scene() {
 
     // Create VBO (Vertex Buffer Object)
     glGenBuffers(1, &s_vbo);
-    // Fill VBO with vertices
-    for (int i=-15; i<15; ++i){
-        for (int j=-15; j<15; ++j){
-            addCube(glm::vec3(i, -1, j));
-            addCube(glm::vec3(i, -2, j));
-            addCube(glm::vec3(i, -3, j));
-        }
-    }
     
     // Create VAO (Vertex Array Object)
     s_vao = cube.getCVao();
@@ -28,11 +20,18 @@ Scene::Scene() {
     //Debind VAO
     glBindVertexArray(0);
 
+    // Create scene 1 X
+    for (int i=-15; i<15; ++i){
+        for (int j=-15; j<15; ++j){
+            addCube(glm::vec3(i, -1, j));
+            addCube(glm::vec3(i, -2, j));
+            addCube(glm::vec3(i, -3, j));
+        }
+    }
+
 }
 
 Scene::~Scene() {
-    glDeleteVertexArrays(1, &s_vao);
-    glDeleteBuffers(1, &s_vbo);
 };
 
 void Scene::drawScene(){
@@ -62,11 +61,8 @@ int Scene::getHighestCubeColumn(glm::vec3 position){
     int index = -1;
     for(int i = 0; i < s_cubesPositions.size(); ++i){
         if((position.x == s_cubesPositions[i].x) && (position.z == s_cubesPositions[i].z)){
-            if(index == -1){
+            if((index == -1) || (position.y < s_cubesPositions[i].y)){
                 position.y = s_cubesPositions[i].y;
-                index = i;
-            }
-            if((position.y < s_cubesPositions[i].y)){
                 index = i;
             }
         }
@@ -75,17 +71,19 @@ int Scene::getHighestCubeColumn(glm::vec3 position){
 }
 
 void Scene::addCube(glm::vec3 position){
-    deleteCube(position);
-    s_cubesPositions.push_back(position);
-    updateScene();
+    int index = findCube(position);
+    if(index == -1){
+        s_cubesPositions.push_back(position);
+        updateScene();
+    }
 }
 
 void Scene::deleteCube(glm::vec3 position){
     int index = findCube(position);
     if(index != -1){
-        int lastIndex = s_cubesPositions.size() - 1;
-        std::swap(s_cubesPositions[index], s_cubesPositions[lastIndex]);
+        std::swap(s_cubesPositions[index], s_cubesPositions[s_cubesPositions.size() - 1]);
         s_cubesPositions.pop_back();
+        //s_cubesPositions.erase(s_cubesPositions.begin() + index);
         updateScene();
     }
 }

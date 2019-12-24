@@ -230,47 +230,47 @@ int main(int argc, char** argv) {
          *********************************/
         // Clean window and depth buffer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Activate depth
+        glEnable(GL_DEPTH_TEST);
 
         /* --------- Scene --------- */
 
         // Choose program
         programScene.m_Program.use();
-
         // Set uniform objects
         glUniform1i(programScene.uTexture, 0);
         glUniform1i(programScene.uTexture2, 1);
-
-        // Activate depth
-        glEnable(GL_DEPTH_TEST);
-
         // Definition of scene model matrix
         glm::mat4 MMatrix;
-        //MMatrix = glm::rotate(MMatrix, 90.0f, glm::vec3(0, 1, 0)); // Rotation
-        // Send matrix
         glm::mat4 ViewMatrix = Camera.getViewMatrix();
         glm::mat4 MVMatrix = ViewMatrix * MMatrix;
+        // Send matrix
         glUniformMatrix4fv(programScene.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(programScene.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
         glUniformMatrix4fv(programScene.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
-
-        // Draw with textures
+        // Draw scene
         scene.drawScene();
+
+        /* --------- Interface --------- */
 
         interface.beginFrame(windowManager.window);
         interface.drawInterface(scene, cursor);
         interface.endFrame(windowManager.window);
 
-        programCursor.m_Program.use();
+        /* --------- Cursor --------- */
 
+        // Desactivate depth
+        glDisable(GL_DEPTH_TEST);
+        // Choose program
+        programCursor.m_Program.use();
+        // Send matrix
         glUniformMatrix4fv(programCursor.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(programCursor.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
         glUniformMatrix4fv(programCursor.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
         glUniform3f(programCursor.uCursorPosition, cursor.getPosition().x, cursor.getPosition().y, cursor.getPosition().z);
+        // Draw curosr
+        cursor.drawCursor();
 
-        // Desactivate depth
-        glDisable(GL_DEPTH_TEST);
-
-        cursor.drawSelection();
 
         // Update the display
         windowManager.swapBuffers();
@@ -279,7 +279,7 @@ int main(int argc, char** argv) {
 
     // Free resources
     scene.freeBuffersScene();
-    cursor.freeBuffers();
+    cursor.freeBuffersCursor();
     glDeleteTextures(1, &textureObject);
 
     return EXIT_SUCCESS;
