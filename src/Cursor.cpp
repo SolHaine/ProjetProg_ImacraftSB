@@ -78,6 +78,9 @@ Cursor::Cursor() : r_position(glm::vec3(0, 0, 0)) {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     //Debind VAO
     glBindVertexArray(0);
+
+    // on cube ?
+    r_onCube = 0;
 }
 
 Cursor::~Cursor() {
@@ -91,10 +94,13 @@ void Cursor::getCubeInScene(Scene &s) {
 	int cubePosition = s.findCube(r_position);
 	// std::cout << "Cursor position : " << r_position << std::endl;
 	if(cubePosition != -1) {
-		// highlight the cube
-		std::cout << "Cursor on cube " << cubePosition << std::endl;
+		// std::cout << "Cursor on cube " << cubePosition << std::endl;
+		r_onCube = 1;
 	}
-	else std::cout << "Cursor not on a cube" << std::endl;
+	else {
+		// std::cout << "Cursor not on a cube" << std::endl;
+		r_onCube = 0;
+	}
 }
 
 void Cursor::drawCursor() {
@@ -119,4 +125,8 @@ void Cursor::freeBuffersCursor() {
     glDeleteVertexArrays(1, &r_vao);
     glDeleteBuffers(1, &r_ibo);
     glDeleteBuffers(1, &r_vbo);
+}
+
+bool Cursor::isOnCube() {
+	return r_onCube;
 }
