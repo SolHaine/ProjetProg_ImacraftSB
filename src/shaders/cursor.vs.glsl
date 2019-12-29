@@ -8,7 +8,6 @@ uniform mat4 uMVPMatrix;
 uniform mat4 uMVMatrix;
 uniform mat4 uNormalMatrix;
 uniform vec3 uCursorPosition;
-uniform vec3 uCursorColor;
 
 // Shader outputs
 out vec3 vPosition_vs;

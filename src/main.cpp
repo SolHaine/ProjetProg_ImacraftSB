@@ -116,8 +116,11 @@ int main(int argc, char** argv) {
      * INITIALIZATION CODE
      *********************************/
     Scene scene;
+    // Radial basis function scene
+    RbfElts rbfElts(3);
+    scene.sceneRbfInterpolation(rbfElts);
     Cursor cursor;
-    std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+    // std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
     cursor.getCubeInScene(scene);
     glm::vec3 cursorColor = glm::vec3(1, 0, 0);
     Interface interface;

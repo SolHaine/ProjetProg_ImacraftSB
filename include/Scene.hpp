@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "../include/Cube.hpp"
+#include "../include/math.hpp"
 
 using namespace glimac;
 
@@ -33,6 +34,9 @@ class Scene {
         void digCube(glm::vec3 position);
         void changeColorCube(glm::vec3 position, glm::vec3 color);
         void freeBuffersScene();
+
+        //Radial basis function
+        void sceneRbfInterpolation(RbfElts &elts);
 
 };
         

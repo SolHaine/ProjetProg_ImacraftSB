@@ -126,3 +126,25 @@ void Scene::freeBuffersScene() {
     glDeleteVertexArrays(1, &s_vao);
     glDeleteBuffers(1, &s_vbo);
 }
+
+//Radial basis function
+void Scene::sceneRbfInterpolation(RbfElts &elts) {
+    solver(elts);
+    // Create interpolated scene
+    for (int i=-15; i<15; ++i){
+        for (int j=-15; j<15; ++j){
+            glm::vec3 position = glm::vec3(i, 0, j);
+            double weight = radialBasisFunction(elts, position);
+            if(weight > 0) {
+                for(int k=0; k<int(floor(weight)); k++) {
+                    extrudeCube(position);
+                }
+            }
+            else if(weight < 0) {
+                for(int k=0; k<int(floor(-weight)); k++) {
+                    digCube(position);
+                }
+            }
+        }
+    }
+}
