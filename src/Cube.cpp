@@ -118,10 +118,10 @@ Cube::Cube() {
         const GLuint VERTEX_ATTR_POSITION = 0;
         glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
         // Enable normale attribute VAO
-        const GLuint VERTEX_ATTR_NORMAL = 2;
+        const GLuint VERTEX_ATTR_NORMAL = 1;
         glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
         // Enable texture attribute VAO
-        const GLuint VERTEX_ATTR_TEXCOORDS = 3;
+        const GLuint VERTEX_ATTR_TEXCOORDS = 2;
         glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS);
         // Specify the format of the vertex
         glBindBuffer(GL_ARRAY_BUFFER, c_vbo);
@@ -141,6 +141,7 @@ void Cube::drawCube(){
     glBindVertexArray(c_vao);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    
 };
 
 void Cube::freeBuffersCube() {

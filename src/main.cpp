@@ -3,19 +3,20 @@
 #include <glimac/SDLWindowManager.hpp>
 #include <glimac/Program.hpp>
 #include <glimac/FilePath.hpp>
-#include <glimac/Image.hpp>
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include <imgui/imgui_impl_sdl.h>
 
 #include <iostream>
+#include <numeric>
 
 #include "../include/Cube.hpp"
 #include "../include/Scene.hpp"
 #include "../include/Cursor.hpp"
 #include "../include/Interface.hpp"
 #include "../include/FreeFlyCamera.hpp"
+#include "../include/Texture.hpp"
 
 using namespace glimac;
 
@@ -25,17 +26,15 @@ struct ProgramScene {
     GLint uMVMatrix;
     GLint uMVPMatrix;
     GLint uNormalMatrix;
-    GLint uTexture;
-    GLint uTexture2;
+    GLint uTextures;
 
     ProgramScene(const FilePath& applicationPath):
         m_Program(loadProgram(applicationPath.dirPath() + "shaders/3D.vs.glsl",
-                              applicationPath.dirPath() + "shaders/normals.fs.glsl")) {
+                              applicationPath.dirPath() + "shaders/3DMultiTex.fs.glsl")) {
         uMVPMatrix = glGetUniformLocation(m_Program.getGLId(), "uMVPMatrix");
         uMVMatrix = glGetUniformLocation(m_Program.getGLId(), "uMVMatrix");
         uNormalMatrix = glGetUniformLocation(m_Program.getGLId(), "uNormalMatrix");
-        uTexture = glGetUniformLocation(m_Program.getGLId(), "uTexture");
-        uTexture2 = glGetUniformLocation(m_Program.getGLId(), "uTexture2");
+        uTextures = glGetUniformLocation(m_Program.getGLId(), "uTextures");
     }
 };
 
@@ -84,31 +83,6 @@ int main(int argc, char** argv) {
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f);
     // Definition of camera
     FreeFlyCamera Camera;
-
-    /*********************************
-     * TEXTURES
-     *********************************/
-    // Load textures
-    std::unique_ptr<Image> triForce = loadImage("assets/textures/triforce.png");
-    if(triForce == NULL) {
-        std::cout << "Erreur de chargement d'une des textures" << std::endl;
-        exit(0);
-    } else {
-        std::cout << "Textures chargées" <<std::endl;
-    }
-
-    // Create textureObject
-    GLuint textureObject;
-    glGenTextures(1, &textureObject);
-    // Bind textureObject
-    glBindTexture(GL_TEXTURE_2D, textureObject);
-        // Fill textureObject with the image
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, triForce->getWidth() , triForce->getHeight(), 0, GL_RGBA, GL_FLOAT, triForce->getPixels());
-        // Filters
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // Debind textureObject
-    glBindTexture(GL_TEXTURE_2D, 0);
 
     /*********************************
      * INITIALIZATION CODE
@@ -242,8 +216,17 @@ int main(int argc, char** argv) {
         // Choose program
         programScene.m_Program.use();
         // Set uniform objects
-        glUniform1i(programScene.uTexture, 0);
-        glUniform1i(programScene.uTexture2, 1);
+        // char temp[200];
+        // for(uint i = 0; i < texture.texturesCube.size(); ++i) {
+        //     sprintf(temp, "uTextures[%d]", i);
+        //     GLint loc = glGetUniformLocation(programScene.m_Program.getGLId(), temp);
+        //     glUniform1i(loc, i);
+        // }
+        //glUniform1iv(loc, texture.texturesCube.size(), 0);
+        GLint test[32];
+        std::iota(std::begin(test), std::end(test), 0);
+        glUniform1iv(programScene.uTextures, 32, test);
+
         // Send matrix
         glUniformMatrix4fv(programScene.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(programScene.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
@@ -280,7 +263,6 @@ int main(int argc, char** argv) {
     // Free resources
     scene.freeBuffersScene();
     cursor.freeBuffersCursor();
-    glDeleteTextures(1, &textureObject);
 
     return EXIT_SUCCESS;
 }

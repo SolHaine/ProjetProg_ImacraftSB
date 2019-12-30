@@ -24,6 +24,6 @@ class Interface {
 		ImVec4 color;
 
 	private:
-		
+		Texture texture;
 
 };

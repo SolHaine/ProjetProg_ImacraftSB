@@ -2,10 +2,11 @@
 
 // Attributes
 layout(location = 0) in vec3 aVertexPosition;
-layout(location = 1) in vec3 aVertexScenePosition;
-layout(location = 2) in vec3 aVertexNormal;
-layout(location = 3) in vec2 aVertexTexCoords;
+layout(location = 1) in vec3 aVertexNormal;
+layout(location = 2) in vec2 aVertexTexCoords;
+layout(location = 3) in vec3 aVertexScenePosition;
 layout(location = 4) in vec3 aVertexSceneColor;
+layout(location = 5) in int aVertexSceneTexture;
 
 // Uniform variables : matrix
 uniform mat4 uMVPMatrix;
@@ -15,8 +16,9 @@ uniform mat4 uNormalMatrix;
 // Shader outputs
 out vec3 vPosition;
 out vec3 vNormal;
-out vec2 vTexCoords;
+out vec3 vTexCoords;
 out vec3 vColor;
+flat out int vTexture;
 
 void main() {
 	// Homogeneous coordinates
@@ -26,8 +28,9 @@ void main() {
 	// Output values
 	vPosition = vec3(uMVMatrix * vertexPosition);
     vNormal = vec3(uNormalMatrix * vertexNormal);
-    vTexCoords = aVertexTexCoords;
+    vTexCoords = aVertexPosition;
     vColor = aVertexSceneColor;
+    vTexture = aVertexSceneTexture;
 
     // Projected position
     gl_Position = uMVPMatrix * vertexPosition;
