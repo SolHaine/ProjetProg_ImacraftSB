@@ -1,6 +1,7 @@
 #include "../include/Scene.hpp"
 
-Scene::Scene() {
+Scene::Scene(Texture t) {
+    texture = t;
 
     // Create VBO (Vertex Buffer Object)
     glGenBuffers(1, &s_vbo);
@@ -31,6 +32,7 @@ Scene::Scene() {
     glBindVertexArray(0);
 
     createSceneFlat();
+    createSceneRbfInterpolation();
 }
 
 Scene::~Scene() {
@@ -40,23 +42,46 @@ void Scene::createSceneFlat(){
     for (int i=-15; i<15; ++i){
         for (int j=-15; j<15; ++j){
             addCube(glm::vec3(i, -1, j), glm::vec3(0, 0, 0), "grass");
-            addCube(glm::vec3(i, -2, j), glm::vec3(0, 0, 0), 1);
-            addCube(glm::vec3(i, -3, j), glm::vec3(0, 0, 0), 2);
+            addCube(glm::vec3(i, -2, j), glm::vec3(0, 0, 0), "stone");
+            addCube(glm::vec3(i, -3, j), glm::vec3(0, 0, 0), "diamond");
         }
     }
 };
+
+//Radial basis function
+void Scene::createSceneRbfInterpolation() {
+    RbfElts elts(3);
+    solver(elts);
+    // Create interpolated scene
+    for (int i=-15; i<15; ++i){
+        for (int j=-15; j<15; ++j){
+            glm::vec3 position = glm::vec3(i, 0, j);
+            double weight = radialBasisFunction(elts, position);
+            if(weight > 0) {
+                for(int k=0; k<int(floor(weight)); k++) {
+                    extrudeCube(position);
+                }
+            }
+            else if(weight < 0) {
+                for(int k=0; k<int(floor(-weight)); k++) {
+                    digCube(position);
+                }
+            }
+        }
+    }
+}
 
 void Scene::drawScene(){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glBindVertexArray(s_vao);
-        for(uint i = 0; i < texture.t_cubeReferences.size(); ++i) {
+        for(uint i = 0; i < texture.getCubeReferences().size(); ++i) {
             glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(GL_TEXTURE_CUBE_MAP, texture.t_cubeReferences[i].t_cube);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, texture.getCubeReferences()[i].t_cube);
         }
         glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, s_vertices.size());
-        for(uint i = 0; i < texture.t_cubeReferences.size(); ++i) {
+        for(uint i = 0; i < texture.getCubeReferences().size(); ++i) {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         }
@@ -170,28 +195,6 @@ void Scene::changeTextureCube(glm::vec3 position, int textureId){
 void Scene::freeBuffersScene() {
     glDeleteVertexArrays(1, &s_vao);
     glDeleteBuffers(1, &s_vbo);
-}
-
-//Radial basis function
-void Scene::sceneRbfInterpolation(RbfElts &elts) {
-    solver(elts);
-    // Create interpolated scene
-    for (int i=-15; i<15; ++i){
-        for (int j=-15; j<15; ++j){
-            glm::vec3 position = glm::vec3(i, 0, j);
-            double weight = radialBasisFunction(elts, position);
-            if(weight > 0) {
-                for(int k=0; k<int(floor(weight)); k++) {
-                    extrudeCube(position);
-                }
-            }
-            else if(weight < 0) {
-                for(int k=0; k<int(floor(-weight)); k++) {
-                    digCube(position);
-                }
-            }
-        }
-    }
 }
 
 // for(int i = 0; i < s_vertices.size(); ++i){

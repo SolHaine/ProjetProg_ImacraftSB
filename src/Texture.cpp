@@ -23,16 +23,14 @@ Texture::Texture() {
         filenames[3] = (boost::filesystem::exists(filenameCubeTexture + "_bottom.png")) ? filenameCubeTexture + "_bottom.png" : filenameCubeTexture + ".png";
         filenames[4] = (boost::filesystem::exists(filenameCubeTexture + "_front.png")) ?  filenameCubeTexture + "_front.png" : filenameCubeTexture + ".png";
         filenames[5] = (boost::filesystem::exists(filenameCubeTexture + "_back.png")) ?  filenameCubeTexture + "_back.png" : filenameCubeTexture + ".png";
-        
-        GLuint textureCube = createCubeTexture(filenames);
-        GLuint textureCubeRadio = createRadioTexture(filenames[4]);
-        t_cubeReferences.push_back({directoriesCubeTextures[i].filename().string(), textureCube, textureCubeRadio});
+        addCubeTexture(filenames, directoriesCubeTextures[i].filename().string());
     }  
+
+    std::cout << "lol" << std::endl;
 
 }
 
 Texture::~Texture() {
-    //glDeleteTextures(1, &textureObject);
 };
 
 GLuint Texture::createCubeTexture(std::vector<std::string> filenames){
@@ -86,6 +84,12 @@ GLuint Texture::createRadioTexture(std::string filename){
     return textureRadio;
 }
 
+void Texture::addCubeTexture(std::vector<std::string> filenames, std::string name){
+    GLuint textureCube = createCubeTexture(filenames);
+    GLuint textureCubeRadio = createRadioTexture(filenames[4]);
+    t_cubeReferences.push_back({name, textureCube, textureCubeRadio});
+}
+
 int Texture::findTextureId(std::string textureName){
     int textureId = -1;
     for (int i = 0; i < t_cubeReferences.size(); ++i) {
@@ -94,4 +98,15 @@ int Texture::findTextureId(std::string textureName){
         }
     }
     return textureId;
+}
+
+std::vector<Texture::TextureCube> Texture::getCubeReferences() {
+    return t_cubeReferences;
+}
+
+void Texture::deleteTextures() {
+    for (int i = 0; i < t_cubeReferences.size(); ++i) {
+        glDeleteTextures(1, &(t_cubeReferences[i].t_cube));
+        glDeleteTextures(1, &(t_cubeReferences[i].t_cubeRadio));
+    }
 }

@@ -18,12 +18,11 @@ class Interface {
 		~Interface();
 		void initImgui(SDL_Window* window, SDL_GLContext* glContext) const;
 		void beginFrame(SDL_Window* window) const;
-		void drawInterface(Scene &scene, const Cursor &cursor);
+		void drawInterface(Scene &scene, const Cursor &cursor, Texture &texture);
 		void endFrame(SDL_Window* window) const;
 
 		ImVec4 color;
 
 	private:
-		Texture texture;
 
 };

@@ -89,11 +89,10 @@ int main(int argc, char** argv) {
     /*********************************
      * INITIALIZATION CODE
      *********************************/
-    Scene scene;
     // Radial basis function scene
-    RbfElts rbfElts(3);
-    scene.sceneRbfInterpolation(rbfElts);
     Cursor cursor;
+    Texture texture;
+    Scene scene(texture);
     // std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
     cursor.getCubeInScene(scene);
     glm::vec3 cursorColor = glm::vec3(1, 0, 0);
@@ -210,22 +209,14 @@ int main(int argc, char** argv) {
 
         // Choose program
         programScene.m_Program.use();
-        // Set uniform objects
-        // char temp[200];
-        // for(uint i = 0; i < texture.texturesCube.size(); ++i) {
-        //     sprintf(temp, "uTextures[%d]", i);
-        //     GLint loc = glGetUniformLocation(programScene.m_Program.getGLId(), temp);
-        //     glUniform1i(loc, i);
-        // }
-        //glUniform1iv(loc, texture.texturesCube.size(), 0);
-        GLint test[32];
-        std::iota(std::begin(test), std::end(test), 0);
-        glUniform1iv(programScene.uTextures, 32, test);
 
-        // Send matrix
+        // Send uniforms
         glUniformMatrix4fv(programScene.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(programScene.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
         glUniformMatrix4fv(programScene.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+        GLint test[32];
+        std::iota(std::begin(test), std::end(test), 0);
+        glUniform1iv(programScene.uTextures, 32, test);
         // Draw scene
         scene.drawScene();
 
@@ -244,7 +235,7 @@ int main(int argc, char** argv) {
         else if(!cursor.isOnCube()) {
             cursorColor = glm::vec3(1, 0, 0);
         }
-        // Send matrix
+        // Send uniforms
         glUniformMatrix4fv(programCursor.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(programCursor.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
         glUniformMatrix4fv(programCursor.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
@@ -256,7 +247,7 @@ int main(int argc, char** argv) {
         /* --------- Interface --------- */
 
         interface.beginFrame(windowManager.window);
-        interface.drawInterface(scene, cursor);
+        interface.drawInterface(scene, cursor, texture);
         interface.endFrame(windowManager.window);
 
 

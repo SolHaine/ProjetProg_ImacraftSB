@@ -28,12 +28,12 @@
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void Interface::drawInterface(Scene &scene, const Cursor &cursor) {
+    void Interface::drawInterface(Scene &scene, const Cursor &cursor, Texture &texture) {
         ImGuiIO& io = ImGui::GetIO();
         ImGuiStyle& style = ImGui::GetStyle();
         style.WindowRounding = 0.0f;
         const float DISTANCE = 5.0f;
-        static std::string radioSelect = "no_texture";
+        static uint radioSelect = 0;
         // std::cout << io.WantCaptureMouse << std::endl; X
 
         if (ImGui::BeginMainMenuBar()) {
@@ -98,16 +98,16 @@
             
             ImGui::SetWindowSize(ImVec2(230, 175));
             
-            for (uint i = 0; i < texture.t_cubeReferences.size(); i++) {
+            for (uint i = 0; i < texture.getCubeReferences().size(); i++) {
                 bool popColor = false;
                 ImGui::PushID(i);
-                if(radioSelect == texture.t_cubeReferences[i].t_cubeName){
+                if(radioSelect == i){
                     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 1.0f)); 
                     popColor = true;
                 }
-                ImTextureID textureRadio = (void*)(intptr_t)(texture.t_cubeReferences[i].t_cubeRadio);
+                ImTextureID textureRadio = (void*)(intptr_t)(texture.getCubeReferences()[i].t_cubeRadio);
                 if (ImGui::ImageButton(textureRadio, ImVec2(32,32), ImVec2(0,0), ImVec2(1,1), 2)){
-                    radioSelect = texture.t_cubeReferences[i].t_cubeName;
+                    radioSelect = i;
                 }
                 if(popColor){
                     ImGui::PopStyleColor();
