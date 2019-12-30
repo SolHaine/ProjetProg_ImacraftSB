@@ -45,6 +45,7 @@ struct ProgramCursor {
     GLint uMVPMatrix;
     GLint uNormalMatrix;
     GLint uCursorPosition;
+    GLint uCursorColor;
 
     ProgramCursor(const FilePath& applicationPath):
         m_Program(loadProgram(applicationPath.dirPath() + "shaders/cursor.vs.glsl",
@@ -53,6 +54,7 @@ struct ProgramCursor {
         uMVMatrix = glGetUniformLocation(m_Program.getGLId(), "uMVMatrix");
         uNormalMatrix = glGetUniformLocation(m_Program.getGLId(), "uNormalMatrix");
         uCursorPosition = glGetUniformLocation(m_Program.getGLId(), "uCursorPosition");
+        uCursorColor = glGetUniformLocation(m_Program.getGLId(), "uCursorColor");
     }
 };
 
@@ -88,8 +90,13 @@ int main(int argc, char** argv) {
      * INITIALIZATION CODE
      *********************************/
     Scene scene;
+    // Radial basis function scene
+    RbfElts rbfElts(3);
+    scene.sceneRbfInterpolation(rbfElts);
     Cursor cursor;
-    std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+    // std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
+    cursor.getCubeInScene(scene);
+    glm::vec3 cursorColor = glm::vec3(1, 0, 0);
     Interface interface;
     interface.initImgui(windowManager.window, &windowManager.openglContext);
 
@@ -136,33 +143,21 @@ int main(int argc, char** argv) {
                     break;
                     // O key to move cursor backwards
                     case SDLK_o: cursor.moveFront(-1);
-                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
-                                cursor.getCubeInScene(scene);
                     break;
                     // L key to move cursor forward
                     case SDLK_l: cursor.moveFront(1);
-                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
-                                cursor.getCubeInScene(scene);
                     break;
                     // K key to move cursor left
                     case SDLK_k: cursor.moveLeft(1);
-                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
-                                cursor.getCubeInScene(scene);
                     break;
                     // M key to move cussor right
                     case SDLK_m: cursor.moveLeft(-1);
-                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
-                                cursor.getCubeInScene(scene);
                     break;
                     // I key to move cursor up
                     case SDLK_i: cursor.moveUp(1);
-                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
-                                cursor.getCubeInScene(scene);
                     break;
                     // P key to move cursor down
                     case SDLK_p: cursor.moveUp(-1);
-                                std::cout << "Cursor position : " << cursor.getPosition() << std::endl;
-                                cursor.getCubeInScene(scene);
                     break;
 
                     default: 
@@ -236,15 +231,25 @@ int main(int argc, char** argv) {
 
         /* --------- Cursor --------- */
 
+        // Set cursor
+        cursor.getCubeInScene(scene);
         // Desactivate depth
         glDisable(GL_DEPTH_TEST);
         // Choose program
         programCursor.m_Program.use();
+        // Select right color
+        if(cursor.isOnCube()) {
+            cursorColor = glm::vec3(0, 0, 1);
+        }
+        else if(!cursor.isOnCube()) {
+            cursorColor = glm::vec3(1, 0, 0);
+        }
         // Send matrix
         glUniformMatrix4fv(programCursor.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(programCursor.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
         glUniformMatrix4fv(programCursor.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
         glUniform3f(programCursor.uCursorPosition, cursor.getPosition().x, cursor.getPosition().y, cursor.getPosition().z);
+        glUniform3f(programCursor.uCursorColor, cursorColor.r, cursorColor.g, cursorColor.b);
         // Draw curosr
         cursor.drawCursor();
 

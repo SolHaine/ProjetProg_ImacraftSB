@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "../include/Cube.hpp"
+#include "../include/math.hpp"
 #include "../include/Texture.hpp"
 
 using namespace glimac;
@@ -40,6 +41,9 @@ class Scene {
         void changeTextureCube(glm::vec3 position, std::string textureName = "no_texture");
         void changeTextureCube(glm::vec3 position, int textureId = 0);
         void freeBuffersScene();
+
+        //Radial basis function
+        void sceneRbfInterpolation(RbfElts &elts);
 
 };
         
