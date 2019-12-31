@@ -1,5 +1,7 @@
 #pragma once
+
 #include <glimac/common.hpp>
+
 #include <vector>
 #include <iostream>
 #include <eigen3/Eigen/Dense>
@@ -7,8 +9,7 @@
 #include <random>
 #include <chrono>
 
-
-// RADIAL BASIS FUNCTIONS
+/* RADIAL BASIS FUNCTIONS */
 
 void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &controlPoints, Eigen::VectorXd &weights);
 
@@ -25,7 +26,5 @@ struct RbfElts {
 };
 
 double phi(const double x);
-
 void solver(RbfElts &elts);
-
 double radialBasisFunction(const RbfElts &elts, glm::vec3 x);

@@ -1,5 +1,7 @@
 #pragma once
+
 #include <glimac/common.hpp>
+
 #include <iostream>
 #include <vector>
 
@@ -16,9 +18,8 @@ class Cube {
     public:
         Cube();
         ~Cube();
-        void drawCube();
-        void freeBuffersCube();
-        GLuint getCVao();
+        void drawCube() const;
+        const GLuint getCVao() const;
 
 };
         

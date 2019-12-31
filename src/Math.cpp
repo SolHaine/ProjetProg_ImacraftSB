@@ -1,9 +1,9 @@
 #include "../include/Math.hpp"
 
-// RADIAL BASIS FUNCTIONS
+/* RADIAL BASIS FUNCTIONS */
 
 double phi(const double x) {
-	// most simple, used for now (maybe phi could be inline)
+	// Most simple, used for now (maybe phi could be inline)
 	return x;
 }
 
@@ -28,14 +28,15 @@ double radialBasisFunction(const RbfElts &elts, glm::vec3 x) {
 }
 
 void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &controlPoints, Eigen::VectorXd &weights) {
-	// select seed from time
+	
+	// Select seed from time
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 
-	// select a random generator engine
+	// Select a random generator engine
 	std::default_random_engine generator(seed);
 
-	// control points
-	// uniform int distribution
+	// Control points
+	// Uniform int distribution
 	std::uniform_int_distribution<int> uniformIntDistribution(-15, 15);
 	for(int i=0; i<nbControlPoints; i++) {
 	   	int x = uniformIntDistribution(generator);
@@ -43,8 +44,8 @@ void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &c
 	   	controlPoints.push_back(glm::vec3(x, 0, y));
 	}
 
-	// control points weights
-	// uniform int distribution
+	// Control points weights
+	// Uniform int distribution
 	std::uniform_int_distribution<int> uniformIntDistributionWeights(-5, 5);
 	Eigen::VectorXd randWeights = Eigen::VectorXd::Zero(nbControlPoints);
 	for(int i=0; i<nbControlPoints; i++) {
@@ -52,4 +53,5 @@ void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &c
 		randWeights(i) = double(weight);
 	}
 	weights = randWeights;
+
 }

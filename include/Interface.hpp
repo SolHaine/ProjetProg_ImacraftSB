@@ -13,16 +13,15 @@
 
 class Interface {
 
-	public:
-		Interface();
-		~Interface();
-		void initImgui(SDL_Window* window, SDL_GLContext* glContext) const;
-		void beginFrame(SDL_Window* window) const;
-		void drawInterface(Scene &scene, const Cursor &cursor, Texture &texture);
-		void endFrame(SDL_Window* window) const;
-
-		ImVec4 color;
-
 	private:
+		ImVec4 i_color;
+
+	public:
+		Interface(SDL_Window* window, SDL_GLContext* glContext);
+		~Interface();
+		void beginFrame(SDL_Window* window) const;
+		void endFrame(SDL_Window* window) const;
+		void drawInterface(Scene &scene, const Cursor &cursor, const Texture &texture);
+		bool isMouseOnInterface() const;
 
 };

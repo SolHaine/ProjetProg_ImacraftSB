@@ -24,11 +24,10 @@ class Texture {
     public:
         Texture();
         ~Texture();
-        GLuint createCubeTexture(std::vector<std::string> filenames);
-        GLuint createRadioTexture(std::string filename);
-        void addCubeTexture(std::vector<std::string>  filenames, std::string name);
-        int findTextureId(std::string textureName);
-        std::vector<TextureCube> getCubeReferences();
-        void deleteTextures();
+        void addCubeTexture(const std::vector<std::string> filenames, const std::string name);
+        GLuint createCubeTexture(const std::vector<std::string> filenames);
+        GLuint createRadioTexture(const std::string filename);
+        int findTextureId(const std::string textureName) const;
+        const std::vector<Texture::TextureCube>& getCubeReferences() const;
 };
         
