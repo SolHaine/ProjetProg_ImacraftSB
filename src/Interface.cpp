@@ -36,13 +36,48 @@
         static uint radioSelect = 0;
         // std::cout << io.WantCaptureMouse << std::endl; X
 
+        std::string menu_action = "";
+
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
-                if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-                if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+                if (ImGui::MenuItem("Open..", "Ctrl+O")) { menu_action = "open"; }
+                if (ImGui::MenuItem("Save", "Ctrl+S")) { menu_action = "save"; }
+
+                    // /* Do stuff */ 
+                    // ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
+                    // char fileName[128] = "";
+                    // if (ImGui::InputText("file name", fileName, sizeof(fileName))) {
+                
+                    // }
+                    // if (ImGui::Button("Save scene", sizeButtons)) {
+                    //    std::string fileNameStg(fileName);
+                    //    scene.saveScene(fileNameStg);
+                    // }
+
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
+        }
+
+        if(menu_action == "open") { ImGui::OpenPopup("Open"); }
+        if(menu_action == "save") { ImGui::OpenPopup("Save"); }
+
+        if(ImGui::BeginPopup("Open")) {
+            // do stuff
+            ImGui::EndPopup();
+        }
+
+        if(ImGui::BeginPopup("Save")) {
+            ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
+            char fileName[128] = "";
+            if (ImGui::InputText("file name", fileName, sizeof(fileName))) {
+              
+            }
+            if (ImGui::Button("Save scene", sizeButtons)) {
+               std::string fileNameStg(fileName);
+               scene.saveScene(fileNameStg);
+            }
+            ImGui::EndPopup();
         }
 
         int corner = 3;
@@ -123,5 +158,5 @@
 
         }
 
-        //ImGui::ShowDemoWindow();
+        ImGui::ShowDemoWindow();
     }

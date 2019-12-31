@@ -41,6 +41,8 @@ class Scene {
         void changeColorCube(glm::vec3 position, glm::vec3 color = glm::vec3(0, 0, 0));
         void changeTextureCube(glm::vec3 position, std::string textureName = "no_texture");
         void changeTextureCube(glm::vec3 position, int textureId = 0);
+        int saveScene(const std::string &filename) const;
+        void loadScene(const std::string &filename);
         void freeBuffersScene();
 
 };

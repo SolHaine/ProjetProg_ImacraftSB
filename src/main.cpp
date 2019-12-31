@@ -99,6 +99,9 @@ int main(int argc, char** argv) {
     Interface interface;
     interface.initImgui(windowManager.window, &windowManager.openglContext);
 
+    // scene.saveScene("test");
+    scene.loadScene("test");
+
     /*********************************
     * APPLICATION LOOP
     *********************************/

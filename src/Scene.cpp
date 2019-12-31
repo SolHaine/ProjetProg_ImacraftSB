@@ -192,6 +192,57 @@ void Scene::changeTextureCube(glm::vec3 position, int textureId){
     }
 }
 
+int Scene::saveScene(const std::string &filename) const {
+    //open file
+    std::ofstream myFile;
+    myFile.open(filename, std::ios::out | std::ios::binary);
+    if(!myFile.is_open()) {
+        std::cerr << "error : can not create file : " << filename << std::endl;
+        return EXIT_FAILURE;
+    }
+    // write the vector size and data
+    myFile << s_vertices.size() << std::endl;
+    for(size_t i=0; i<s_vertices.size(); ++i) {
+        myFile << s_vertices[i].s_cubesPositions.x << " ";
+        myFile << s_vertices[i].s_cubesPositions.y << " ";
+        myFile << s_vertices[i].s_cubesPositions.z << " ";
+        myFile << s_vertices[i].s_cubesColors.r << " ";
+        myFile << s_vertices[i].s_cubesColors.g << " ";
+        myFile << s_vertices[i].s_cubesColors.b << " ";
+        myFile << s_vertices[i].s_cubesTexture << " ";
+    }
+    // close file
+    myFile.close();
+    return EXIT_SUCCESS;
+}
+
+void Scene::loadScene(const std::string &filename) {
+    // open file
+    std::ifstream myFile;
+    myFile.open(filename, std::ios::in | std::ios::binary);
+    if(!myFile.is_open()) {
+        std::cerr << "error : can not read file : " << filename << std::endl;
+    }
+    // read the vector size
+    size_t nbCubes;
+    myFile >> nbCubes;
+    // reconstruct scene
+    std::vector<ShapeVertexScene> vertices(nbCubes);
+    for(size_t i=0; i<nbCubes; ++i) {
+        myFile >> vertices[i].s_cubesPositions.x;
+        myFile >> vertices[i].s_cubesPositions.y;
+        myFile >> vertices[i].s_cubesPositions.z;
+        myFile >> vertices[i].s_cubesColors.r;
+        myFile >> vertices[i].s_cubesColors.g;
+        myFile >> vertices[i].s_cubesColors.b;
+        myFile >> vertices[i].s_cubesTexture;
+    }
+    // close file
+    myFile.close();
+    s_vertices = vertices;
+    updateScene();
+}
+
 void Scene::freeBuffersScene() {
     glDeleteVertexArrays(1, &s_vao);
     glDeleteBuffers(1, &s_vbo);
