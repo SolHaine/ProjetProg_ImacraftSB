@@ -1,6 +1,6 @@
 #include "../include/Scene.hpp"
 
-Scene::Scene(Texture t) {
+Scene::Scene(const Texture &t, const uint width, const uint height) : s_width(width), s_height(height) {
     texture = t;
 
     // Create VBO (Vertex Buffer Object)
@@ -36,11 +36,13 @@ Scene::Scene(Texture t) {
 }
 
 Scene::~Scene() {
+    glDeleteVertexArrays(1, &s_vao);
+    glDeleteBuffers(1, &s_vbo);
 };
 
-void Scene::createSceneFlat(){
-    for (int i=-15; i<15; ++i){
-        for (int j=-15; j<15; ++j){
+void Scene::createSceneFlat() {
+    for (int i = -(s_width/2); i < (s_width/2); ++i){
+        for (int j = -(s_height/2); j < (s_height/2); ++j){
             addCube(glm::vec3(i, -1, j), glm::vec3(0, 0, 0), "grass");
             addCube(glm::vec3(i, -2, j), glm::vec3(0, 0, 0), "stone");
             addCube(glm::vec3(i, -3, j), glm::vec3(0, 0, 0), "diamond");
@@ -53,17 +55,16 @@ void Scene::createSceneRbfInterpolation() {
     RbfElts elts(3);
     solver(elts);
     // Create interpolated scene
-    for (int i=-15; i<15; ++i){
-        for (int j=-15; j<15; ++j){
+    for (int i = -(s_width/2); i < (s_width/2); ++i){
+        for (int j = -(s_height/2); j < (s_height/2); ++j){
             glm::vec3 position = glm::vec3(i, 0, j);
             double weight = radialBasisFunction(elts, position);
             if(weight > 0) {
-                for(int k=0; k<int(floor(weight)); k++) {
+                for(int k = 0; k < int(floor(weight)); ++k) {
                     extrudeCube(position);
                 }
-            }
-            else if(weight < 0) {
-                for(int k=0; k<int(floor(-weight)); k++) {
+            } else if(weight < 0) {
+                for(int k = 0; k < int(floor(-weight)); ++k) {
                     digCube(position);
                 }
             }
@@ -71,7 +72,8 @@ void Scene::createSceneRbfInterpolation() {
     }
 }
 
-void Scene::drawScene(){
+void Scene::drawScene() const {
+    // Enable alpha
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -90,15 +92,13 @@ void Scene::drawScene(){
     glDisable(GL_BLEND);
 };
 
-void Scene::updateScene(){
-    // Bind VBO
+void Scene::updateScene() {
     glBindBuffer(GL_ARRAY_BUFFER, s_vbo);
-        // Update vertices of the VBO
         glBufferData(GL_ARRAY_BUFFER, s_vertices.size() * sizeof(ShapeVertexScene), s_vertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-int Scene::findCube(glm::vec3 position){
+const int Scene::findCube(const glm::vec3 position) const {
     for(int i = 0; i < s_vertices.size(); ++i){
         if(glm::length(position-s_vertices[i].s_cubesPositions) < 0.1f){
             return i;
@@ -107,7 +107,7 @@ int Scene::findCube(glm::vec3 position){
     return -1; // -1 if we didn't find it
 }
 
-int Scene::getHighestCubeColumn(glm::vec3 position){
+const int Scene::getHighestCubeColumn(glm::vec3 position) const {
     int index = -1;
     for(int i = 0; i < s_vertices.size(); ++i){
         if((position.x == s_vertices[i].s_cubesPositions.x) && (position.z == s_vertices[i].s_cubesPositions.z)){
@@ -120,16 +120,16 @@ int Scene::getHighestCubeColumn(glm::vec3 position){
     return index; // -1 if we didn't find it
 }
 
-void Scene::addCube(glm::vec3 position, glm::vec3 color, std::string textureName){
+void Scene::addCube(const glm::vec3 position, const glm::vec3 color, const std::string textureName){
     deleteCube(position);
 
-    int textureId = texture.findTextureId(textureName);
+    uint textureId = texture.findTextureId(textureName);
     s_vertices.push_back({position, color, textureId});
     
     updateScene();
 }
 
-void Scene::addCube(glm::vec3 position, glm::vec3 color, int textureId){
+void Scene::addCube(const glm::vec3 position, const glm::vec3 color, const uint textureId){
     deleteCube(position);
 
     s_vertices.push_back({position, color, textureId});
@@ -137,12 +137,12 @@ void Scene::addCube(glm::vec3 position, glm::vec3 color, int textureId){
     updateScene();
 }
 
-void Scene::deleteCube(glm::vec3 position){
+void Scene::deleteCube(const glm::vec3 position){
     int index = findCube(position);
     if(index != -1){
         std::swap(s_vertices[index], s_vertices[s_vertices.size() - 1]);
         s_vertices.pop_back();
-        //s_vertices.erase(s_vertices.begin() + index);
+        //OR s_vertices.erase(s_vertices.begin() + index);
         updateScene();
     }
 }
@@ -151,10 +151,16 @@ void Scene::extrudeCube(glm::vec3 position){
     int index = getHighestCubeColumn(position);
     if(index != -1){
         position = s_vertices[index].s_cubesPositions;
-        (position.y)++;
         glm::vec3 color = s_vertices[index].s_cubesColors;
-        int texture = s_vertices[index].s_cubesTexture;
-        addCube(position, color, texture);
+        uint textureId = s_vertices[index].s_cubesTexture;
+        if(texture.findTextureId("grass") != textureId){
+            (position.y)++;
+            addCube(position, color, textureId);
+        } else {
+            addCube(position, color, "dirt");
+            (position.y)++;
+            addCube(position, color, "grass");
+        }
     }
 
 }
@@ -167,7 +173,7 @@ void Scene::digCube(glm::vec3 position){
     }
 }
 
-void Scene::changeColorCube(glm::vec3 position, glm::vec3 color){
+void Scene::changeColorCube(const glm::vec3 position, const glm::vec3 color){
     int index = findCube(position);
     if(index != -1) {
         s_vertices[index].s_cubesColors = color;
@@ -175,7 +181,7 @@ void Scene::changeColorCube(glm::vec3 position, glm::vec3 color){
     }
 }
 
-void Scene::changeTextureCube(glm::vec3 position, std::string textureName){
+void Scene::changeTextureCube(const glm::vec3 position, const std::string textureName){
     int index = findCube(position);
     if(index != -1) {
         int textureId = texture.findTextureId(textureName);
@@ -184,7 +190,7 @@ void Scene::changeTextureCube(glm::vec3 position, std::string textureName){
     }
 }
 
-void Scene::changeTextureCube(glm::vec3 position, int textureId){
+void Scene::changeTextureCube(const glm::vec3 position, const uint textureId){
     int index = findCube(position);
     if(index != -1) {
         s_vertices[index].s_cubesTexture = textureId;

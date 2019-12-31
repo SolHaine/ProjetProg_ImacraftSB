@@ -16,34 +16,35 @@ class Scene {
         Texture texture;
         GLuint s_vbo;
         GLuint s_vao;
+        int s_width;
+        int s_height;
 
         struct ShapeVertexScene { 
             glm::vec3 s_cubesPositions;
             glm::vec3 s_cubesColors;
-            int s_cubesTexture;
+            uint s_cubesTexture;
         };
         std::vector<ShapeVertexScene> s_vertices;
 
     public:
-        Scene(Texture t);
+        Scene(const Texture &t, const uint width, const uint height);
         ~Scene();
         void createSceneFlat();
         void createSceneRbfInterpolation();
-        void drawScene();
+        void drawScene() const;
         void updateScene();
-        int findCube(glm::vec3 position);
-        int getHighestCubeColumn(glm::vec3 position);
-        void deleteCube(glm::vec3 position);
-        void addCube(glm::vec3 position, glm::vec3 color = glm::vec3(0, 0, 0), std::string textureName = "no_texture");
-        void addCube(glm::vec3 position, glm::vec3 color = glm::vec3(0, 0, 0), int textureId = 0);
+        const int findCube(const glm::vec3 position) const;
+        const int getHighestCubeColumn(glm::vec3 position) const;
+        void addCube(const glm::vec3 position, const glm::vec3 color = glm::vec3(0, 0, 0), const std::string textureName = "no_texture");
+        void addCube(const glm::vec3 position, const glm::vec3 color = glm::vec3(0, 0, 0), const uint textureId = 0);
+        void deleteCube(const glm::vec3 position);
         void extrudeCube(glm::vec3 position);
         void digCube(glm::vec3 position);
-        void changeColorCube(glm::vec3 position, glm::vec3 color = glm::vec3(0, 0, 0));
-        void changeTextureCube(glm::vec3 position, std::string textureName = "no_texture");
-        void changeTextureCube(glm::vec3 position, int textureId = 0);
+        void changeColorCube(const glm::vec3 position, const glm::vec3 color = glm::vec3(0, 0, 0));
+        void changeTextureCube(const glm::vec3 position, const std::string textureName = "no_texture");
+        void changeTextureCube(const glm::vec3 position, const uint textureId = 0);
         int saveScene(const std::string &filename) const;
         void loadScene(const std::string &filename);
-        void freeBuffersScene();
 
 };
         

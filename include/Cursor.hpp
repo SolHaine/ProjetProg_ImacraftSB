@@ -8,22 +8,25 @@
 class Cursor {
 
 	private:
-		glm::vec3 r_position;
 		GLuint r_vbo;
+		GLuint r_vboScenePosition;
+		GLuint r_vboColor;
         GLuint r_ibo;
         GLuint r_vao;
+
         std::vector<glm::vec3> r_vertices;
-        bool r_onCube;
+		glm::vec3 r_position;
+		glm::vec3 r_color;
 
 	public:
-		Cursor();
+		Cursor(Scene &s);
 		~Cursor();
+		void drawCursor() const;
+		void updateCursorScenePosition();
+		void updateCursorColor();
+		void changeColorOnSceneCube(const Scene &s);
+		void moveFront(const float t, const Scene &s);
+		void moveLeft(const float t, const Scene &s);
+		void moveUp(const float t, const Scene &s);
 		glm::vec3 getPosition() const;
-		void getCubeInScene(Scene &s);
-		void drawCursor();
-		void moveFront(const float t);
-		void moveLeft(const float t);
-		void moveUp(const float t);
-		void freeBuffersCursor();
-		bool isOnCube();	
 };

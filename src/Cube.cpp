@@ -135,21 +135,17 @@ Cube::Cube() {
 }
 
 Cube::~Cube() {
-};
-
-void Cube::drawCube(){
-    glBindVertexArray(c_vao);
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-    
-};
-
-void Cube::freeBuffersCube() {
     glDeleteVertexArrays(1, &c_vao);
     glDeleteBuffers(1, &c_ibo);
     glDeleteBuffers(1, &c_vbo);
-}
+};
 
-GLuint Cube::getCVao(){
+void Cube::drawCube() const {
+    glBindVertexArray(c_vao);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+};
+
+const GLuint Cube::getCVao() const {
     return c_vao;
 };
