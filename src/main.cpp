@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
     Interface interface(windowManager.window, &windowManager.openglContext);
 
     // scene.saveScene("test");
-    scene.loadScene("test");
+    // scene.loadScene("test");
 
     /*********************************
     * APPLICATION LOOP

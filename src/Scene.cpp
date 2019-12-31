@@ -249,10 +249,10 @@ void Scene::loadScene(const std::string &filename) {
     updateScene();
 }
 
-void Scene::freeBuffersScene() {
-    glDeleteVertexArrays(1, &s_vao);
-    glDeleteBuffers(1, &s_vbo);
-}
+// void Scene::freeBuffersScene() {
+//     glDeleteVertexArrays(1, &s_vao);
+//     glDeleteBuffers(1, &s_vbo);
+// }
 
 // for(int i = 0; i < s_vertices.size(); ++i){
 //     std::cout << s_vertices[i].s_cubesTexture << std::endl;
