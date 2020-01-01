@@ -201,7 +201,7 @@ void Scene::changeTextureCube(const glm::vec3 position, const uint textureId){
 int Scene::saveScene(const std::string &filename) const {
     //open file
     std::ofstream myFile;
-    myFile.open(filename, std::ios::out | std::ios::binary);
+    myFile.open("./bin/savedScenes/"+filename, std::ios::out | std::ios::binary);
     if(!myFile.is_open()) {
         std::cerr << "error : can not create file : " << filename << std::endl;
         return EXIT_FAILURE;
@@ -222,12 +222,13 @@ int Scene::saveScene(const std::string &filename) const {
     return EXIT_SUCCESS;
 }
 
-void Scene::loadScene(const std::string &filename) {
+int Scene::loadScene(const std::string &filename) {
     // open file
     std::ifstream myFile;
-    myFile.open(filename, std::ios::in | std::ios::binary);
+    myFile.open("./bin/savedScenes/"+filename, std::ios::in | std::ios::binary);
     if(!myFile.is_open()) {
         std::cerr << "error : can not read file : " << filename << std::endl;
+        return EXIT_FAILURE;
     }
     // read the vector size
     size_t nbCubes;
@@ -247,6 +248,7 @@ void Scene::loadScene(const std::string &filename) {
     myFile.close();
     s_vertices = vertices;
     updateScene();
+    return EXIT_SUCCESS;
 }
 
 // void Scene::freeBuffersScene() {

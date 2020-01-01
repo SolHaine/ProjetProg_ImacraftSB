@@ -46,7 +46,7 @@ void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &c
 
 	// Control points weights
 	// Uniform int distribution
-	std::uniform_int_distribution<int> uniformIntDistributionWeights(-5, 5);
+	std::uniform_int_distribution<int> uniformIntDistributionWeights(-3, 4);
 	Eigen::VectorXd randWeights = Eigen::VectorXd::Zero(nbControlPoints);
 	for(int i=0; i<nbControlPoints; i++) {
 		int weight = uniformIntDistributionWeights(generator);

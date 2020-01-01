@@ -37,8 +37,18 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     // Menu bar
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-            if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+            if (ImGui::MenuItem("Open..", "Ctrl+O")) {
+                std::string test;
+                std::cout << "enter file name : ";
+                std::cin >> test;
+                scene.loadScene(test);
+            }
+            if (ImGui::MenuItem("Save", "Ctrl+S")) {
+                std::string test;
+                std::cout << "enter file name : ";
+                std::cin >> test;
+                scene.saveScene(test);
+            }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();

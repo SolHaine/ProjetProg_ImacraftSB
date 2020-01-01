@@ -44,7 +44,7 @@ class Scene {
         void changeTextureCube(const glm::vec3 position, const std::string textureName = "no_texture");
         void changeTextureCube(const glm::vec3 position, const uint textureId = 0);
         int saveScene(const std::string &filename) const;
-        void loadScene(const std::string &filename);
+        int loadScene(const std::string &filename);
 
 };
         

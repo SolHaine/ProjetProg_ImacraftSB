@@ -64,8 +64,6 @@ int main(int argc, char** argv) {
     // Definition of interface
     Interface interface(windowManager.window, &windowManager.openglContext);
 
-    // scene.saveScene("test");
-    // scene.loadScene("test");
 
     /*********************************
     * APPLICATION LOOP
