@@ -6,6 +6,7 @@ in vec3 vNormal;
 in vec3 vTexCoords;
 in vec3 vColor;
 flat in int vTexture;
+in vec3 vVertexPosition;
 
 // Uniform variables
 uniform samplerCube uTextures[32];
@@ -22,8 +23,8 @@ float directionnalLightInfluence(vec3 lightDir) {
 }
 
 float ponctualLightInfluence(vec3 lightPos) {
-	vec3 dir = normalize(vPosition-lightPos);
-	float d = length(vPosition - lightPos);
+	vec3 dir = normalize(vVertexPosition-lightPos);
+	float d = length(vVertexPosition - lightPos);
 	float luminosityPointLight = max(-dot(vNormal, dir), 0.)/(d*d);
 	return luminosityPointLight;
 }
