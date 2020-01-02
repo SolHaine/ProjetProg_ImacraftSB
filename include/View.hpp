@@ -8,6 +8,7 @@
 #include <numeric>
 
 #include "../include/Texture.hpp"
+#include "../include/Lights.hpp"
 
 using namespace glimac;
 
@@ -19,6 +20,9 @@ class View {
         GLint m_uMVPMatrix;
         GLint m_uNormalMatrix;
         GLint m_uTextures;
+        GLint m_uPonctualLights;
+        GLint m_uNbPonctualLights;
+        GLint m_uDirectionnalLight;
 
     public:
         View(const FilePath& applicationPath);
@@ -26,6 +30,5 @@ class View {
         void useView() const;
         void sendMatrixView(const glm::mat4 MVMatrix, const glm::mat4 ProjMatrix) const;
         void sendTexturesView(const Texture &t) const;
-
+        void sendLightsView(const Lights &lights) const;
 };
-        

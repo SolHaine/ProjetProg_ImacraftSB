@@ -6,6 +6,9 @@ View::View(const FilePath& applicationPath) : m_program(loadProgram(applicationP
         m_uMVMatrix = glGetUniformLocation(m_program.getGLId(), "uMVMatrix");
         m_uNormalMatrix = glGetUniformLocation(m_program.getGLId(), "uNormalMatrix");
         m_uTextures = glGetUniformLocation(m_program.getGLId(), "uTextures");
+        m_uPonctualLights = glGetUniformLocation(m_program.getGLId(), "uPonctualLights");
+        m_uNbPonctualLights = glGetUniformLocation(m_program.getGLId(), "uNbPonctualLights");
+        m_uDirectionnalLight = glGetUniformLocation(m_program.getGLId(), "uDirectionnalLight");
 }
 
 void View::useView() const {
@@ -22,4 +25,14 @@ void View::sendTexturesView(const Texture &t) const {
     std::vector<GLint> idTextures(t.getCubeReferences().size());
     std::iota(std::begin(idTextures), std::end(idTextures), 0);
     glUniform1iv(m_uTextures, idTextures.size(), idTextures.data());
+}
+
+void View::sendLightsView(const Lights &lights) const {
+    glUniform1i(m_uDirectionnalLight, lights.isDay());
+    glUniform1i(m_uNbPonctualLights, lights.getNbPonctualLights());
+    glm::vec3 ponctualLights[lights.getNbPonctualLights()];
+    for(int i=0; i< lights.getNbPonctualLights(); i++) {
+        ponctualLights[i] = lights.getPonctualLightsPositions()[i];
+    }
+    glUniform3fv(m_uPonctualLights, lights.getNbPonctualLights(), glm::value_ptr(ponctualLights[0]));
 }

@@ -25,7 +25,7 @@ void Interface::endFrame(SDL_Window* window) const {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture &texture) {
+void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture &texture, Lights &lights) {
     
     ImGuiIO &i_io = ImGui::GetIO();
     ImGuiStyle &i_style = ImGui::GetStyle();
@@ -34,25 +34,61 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     const float distance = 5.0f;
     static uint radioSelect = 0;
 
+    std::string menu_action = "";
+
     // Menu bar
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open..", "Ctrl+O")) {
-                std::string test;
-                std::cout << "enter file name : ";
-                std::cin >> test;
-                scene.loadScene(test);
+                menu_action = "open";
+                // std::string test;
+                // std::cout << "enter file name : ";
+                // std::cin >> test;
+                // scene.loadScene(test);
             }
             if (ImGui::MenuItem("Save", "Ctrl+S")) {
-                std::string test;
-                std::cout << "enter file name : ";
-                std::cin >> test;
-                scene.saveScene(test);
+                menu_action = "save";
+                // std::string test;
+                // std::cout << "enter file name : ";
+                // std::cin >> test;
+                // scene.saveScene(test);
             }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
+
+    if(menu_action == "open") { ImGui::OpenPopup("Open"); }
+    if(menu_action == "save") { ImGui::OpenPopup("Save"); }
+
+    if(ImGui::BeginPopup("Open")) {
+        ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
+        if (ImGui::Button("Open scene", sizeButtons)) {
+            std::string test;
+            std::cout << "enter file name : ";
+            std::cin >> test;
+            scene.loadScene(test);
+        }
+        ImGui::EndPopup();
+    }
+
+    if(ImGui::BeginPopup("Save")) {
+        ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
+        char fileName[128] = "";
+        if (ImGui::InputTextWithHint("", "enter file name", fileName, sizeof(fileName))) {
+        // input doesn't work, have to name the file in the terminal
+            std::cout << "test : " << i_io.KeyMap[ImGuiKey_Backspace] << std::endl;
+        }
+        if (ImGui::Button("Save scene", sizeButtons)) {
+            // std::string test;
+            // std::cout << "enter file name : ";
+            // std::cin >> test;
+            std::string fileNameStg(fileName);
+            scene.saveScene(fileNameStg);
+        }
+        ImGui::EndPopup();
+    }
+
 
     // Toolbox
     int corner = 3;
@@ -97,6 +133,16 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
             scene.changeTextureCube(cursor.getPosition(), 0);
         }
 
+        // Lights
+        ImGui::NewLine();
+        ImGui::TextWrapped("Light:");
+        if (ImGui::Button("Switch day/night", sizeButtons)) {
+            lights.switchDayNight();
+        }
+        if (ImGui::Button("Add ponctual light", sizeButtons)) {
+            lights.addPonctualLight(cursor.getPosition());
+        }
+
         ImGui::End();
     }
 
@@ -131,7 +177,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         ImGui::End();
     }
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 }
 
 bool Interface::isMouseOnInterface() const {

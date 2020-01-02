@@ -16,6 +16,7 @@
 #include "../include/Scene.hpp"
 #include "../include/Cursor.hpp"
 #include "../include/Interface.hpp"
+#include "../include/Lights.hpp"
 
 using namespace glimac;
 
@@ -64,6 +65,9 @@ int main(int argc, char** argv) {
     // Definition of interface
     Interface interface(windowManager.window, &windowManager.openglContext);
 
+    // Definition of lights
+    Lights lights;
+
 
     /*********************************
     * APPLICATION LOOP
@@ -92,6 +96,7 @@ int main(int argc, char** argv) {
 
             // Camera and cursor move with keyboard keys
             if(e.type == SDL_KEYDOWN) {
+                ImGui::GetIO().AddInputCharacter(e.key.keysym.sym);
                 switch(e.key.keysym.sym) {
                     // Z key to move forward
                     case SDLK_z: zPressed = true;
@@ -183,6 +188,7 @@ int main(int argc, char** argv) {
         // Send uniforms (view matrix and textures)
         view.sendMatrixView(MVMatrix, ProjMatrix);
         view.sendTexturesView(texture);
+        view.sendLightsView(lights);
 
         /* --------- Scene --------- */
         // Draw scene
@@ -197,7 +203,7 @@ int main(int argc, char** argv) {
         /* --------- Interface --------- */
         // Draw interface
         interface.beginFrame(windowManager.window);
-        interface.drawInterface(scene, cursor, texture);
+        interface.drawInterface(scene, cursor, texture, lights);
         interface.endFrame(windowManager.window);
 
         // Update the display

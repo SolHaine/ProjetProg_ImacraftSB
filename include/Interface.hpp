@@ -10,6 +10,7 @@
 
 #include "../include/Scene.hpp"
 #include "../include/Cursor.hpp"
+#include "../include/Lights.hpp"
 
 class Interface {
 
@@ -21,7 +22,7 @@ class Interface {
 		~Interface();
 		void beginFrame(SDL_Window* window) const;
 		void endFrame(SDL_Window* window) const;
-		void drawInterface(Scene &scene, const Cursor &cursor, const Texture &texture);
+		void drawInterface(Scene &scene, const Cursor &cursor, const Texture &texture, Lights &lights);
 		bool isMouseOnInterface() const;
 
 };
