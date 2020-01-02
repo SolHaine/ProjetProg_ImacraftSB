@@ -33,7 +33,7 @@ float ponctualLightInfluence(vec3 lightPos) {
 void main() {
 	float luminosity = 0.3;
 	if(uDirectionnalLight) {
-		vec3 dir = vec3(1, 1, 1);
+		vec3 dir = vec3(5, -10, 5);
 		dir = normalize(dir);
 		luminosity += directionnalLightInfluence(dir);
 	}
