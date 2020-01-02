@@ -16,62 +16,81 @@ Cube::Cube() {
     // Bind VBO
     glBindBuffer(GL_ARRAY_BUFFER, c_vbo);
         // Fill VBO with vertices
-        //    v6----- v5
+        //    v------ v
         //   /|      /|
-        //  v1------v0|
+        //  v------v| |
         //  | |     | |
-        //  | |v7---|-|v4
+        //  | |v----|-|v
         //  |/      |/
-        //  v2------v3
+        //  v------v
         std::vector<glm::vec3> c_vPosition = { 
-            // v0
-            glm::vec3(0.5f, 0.5f, 0.5f),
-            // v1
-            glm::vec3(-0.5f, 0.5f, 0.5f),
-            // v2
-            glm::vec3(-0.5f, -0.5f, 0.5f),
-            // v3
-            glm::vec3(0.5f, -0.5f, 0.5f),
-            // v4
+            // Front face
+            glm::vec3(-0.5f, -0.5f,  0.5f),
+            glm::vec3(0.5f, -0.5f,  0.5f),
+            glm::vec3(0.5f,  0.5f,  0.5f),
+            glm::vec3(-0.5f,  0.5f,  0.5f),
+            // Back face
+            glm::vec3(-0.5f, -0.5f, -0.5f),
+            glm::vec3(-0.5f,  0.5f, -0.5f),
+            glm::vec3(0.5f,  0.5f, -0.5f),
             glm::vec3(0.5f, -0.5f, -0.5f),
-            // v5
-            glm::vec3(0.5f, 0.5f, -0.5f),
-            // v6
-            glm::vec3(-0.5f, 0.5f, -0.5f),
-            // v7
-            glm::vec3(-0.5f, -0.5f, -0.5f)
+            // Top face
+            glm::vec3(-0.5f,  0.5f, -0.5f),
+            glm::vec3(-0.5f,  0.5f,  0.5f),
+            glm::vec3(0.5f,  0.5f,  0.5f),
+            glm::vec3(0.5f,  0.5f, -0.5f),
+            // Bot face 
+            glm::vec3(-0.5f, -0.5f, -0.5f),
+            glm::vec3(0.5f, -0.5f, -0.5f),
+            glm::vec3(0.5f, -0.5f,  0.5f),
+            glm::vec3(-0.5f, -0.5f,  0.5f),
+            // Left face 
+            glm::vec3(-0.5f, -0.5f, -0.5f),
+            glm::vec3(-0.5f, -0.5f,  0.5f),
+            glm::vec3(-0.5f,  0.5f,  0.5f),
+            glm::vec3(-0.5f,  0.5f, -0.5f),
+            // Right face 
+            glm::vec3(0.5f, -0.5f, -0.5f),
+            glm::vec3(0.5f,  0.5f, -0.5f),
+            glm::vec3(0.5f,  0.5f,  0.5f),
+            glm::vec3(0.5f, -0.5f,  0.5f)
         };
-        std::vector<glm::vec2> c_vTexCoords = {
-            // v0
-            glm::vec2(1, 0),
-            // v1
-            glm::vec2(0, 0),
-            // v2
-            glm::vec2(0, 1),
-            // v3
-            glm::vec2(1, 1),
-            // v4
-            glm::vec2(1, 1),
-            // v5
-            glm::vec2(1, 0),
-            // v6
-            glm::vec2(0, 0),
-            // v7
-            glm::vec2(0, 1)
+        std::vector<glm::vec3> c_vNormals = { 
+            // Front face
+            glm::vec3(0.0f,  0.0f,  1.0f),
+            glm::vec3(0.0f,  0.0f,  1.0f),
+            glm::vec3(0.0f,  0.0f,  1.0f),
+            glm::vec3(0.0f,  0.0f,  1.0f),
+            // Back face
+            glm::vec3(0.0f,  0.0f, -1.0f),
+            glm::vec3(0.0f,  0.0f, -1.0f),
+            glm::vec3(0.0f,  0.0f, -1.0f),
+            glm::vec3(0.0f,  0.0f, -1.0f),
+            // Top face
+            glm::vec3(0.0f,  1.0f,  0.0f),
+            glm::vec3(0.0f,  1.0f,  0.0f),
+            glm::vec3(0.0f,  1.0f,  0.0f),
+            glm::vec3(0.0f,  1.0f,  0.0f),
+            // Bot face 
+            glm::vec3(0.0f, -1.0f,  0.0f),
+            glm::vec3(0.0f, -1.0f,  0.0f),
+            glm::vec3(0.0f, -1.0f,  0.0f),
+            glm::vec3(0.0f, -1.0f,  0.0f),
+            // Left face 
+            glm::vec3(-1.0f,  0.0f,  0.0f),
+            glm::vec3(-1.0f,  0.0f,  0.0f),
+            glm::vec3(-1.0f,  0.0f,  0.0f),
+            glm::vec3(-1.0f,  0.0f,  0.0f),
+            // Right face 
+            glm::vec3(1.0f,  0.0f,  0.0f),
+            glm::vec3(1.0f,  0.0f,  0.0f),
+            glm::vec3(1.0f,  0.0f,  0.0f),
+            glm::vec3(1.0f,  0.0f,  0.0f)
         };
         for(size_t i = 0; i < c_vPosition.size(); ++i) {
             ShapeVertex vertex;
-
-            // Position
-            vertex.position.x = c_vPosition[i].x;
-            vertex.position.y = c_vPosition[i].y;
-            vertex.position.z = c_vPosition[i].z;
-            // Normal
-            vertex.normal = vertex.position;
-            // Texture coordinates
-            vertex.texCoords.x = c_vTexCoords[i].x;
-            vertex.texCoords.y = c_vTexCoords[i].y;
-
+            vertex.position = c_vPosition[i]; // Position
+            vertex.normal = c_vNormals[i]; // Normal
             c_vertices.push_back(vertex);
         }
         glBufferData(GL_ARRAY_BUFFER, c_vertices.size() * sizeof(ShapeVertex), c_vertices.data(), GL_STATIC_DRAW);
@@ -83,26 +102,32 @@ Cube::Cube() {
     // Bind IBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, c_ibo);
         // Fill IBO with index
-        //    v6----- v5
+        //    v------ v
         //   /|      /|
-        //  v1------v0|
+        //  v------v| |
         //  | |     | |
-        //  | |v7---|-|v4
+        //  | |v----|-|v
         //  |/      |/
-        //  v2------v3
+        //  v------v
         uint32_t indexCube[] = {
-            // front
-            0, 1, 2,  0, 2, 3,
-            // behind
-            4, 7, 6,  4, 6, 5,
-            // left
-            1, 6, 7,  1, 7, 2,
-            // right
-            0, 3, 4,  0, 4, 5,
-            // below
-            2, 7, 4,  2, 4, 3,
-            // above
-            0, 5, 6,  0, 6, 1
+            // Back face
+            0, 1, 2,
+            0, 2, 3,
+            // Front face
+            4, 5, 6,
+            4, 6, 7,
+            // Top face
+            8, 9, 10,
+            8, 10, 11,
+            // Bottom face
+            12, 13, 14,
+            12, 14, 15,
+            // Left face
+            16, 17, 18,
+            16, 18, 19,
+            // Right face
+            20, 21, 22,
+            20, 22, 23
         };
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexCube), indexCube, GL_STATIC_DRAW);
     // Debind IBO
@@ -121,13 +146,13 @@ Cube::Cube() {
         const GLuint VERTEX_ATTR_NORMAL = 1;
         glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
         // Enable texture attribute VAO
-        const GLuint VERTEX_ATTR_TEXCOORDS = 2;
-        glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS);
+        // const GLuint VERTEX_ATTR_TEXCOORDS = 2;
+        // glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS);
         // Specify the format of the vertex
         glBindBuffer(GL_ARRAY_BUFFER, c_vbo);
             glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)offsetof(ShapeVertex, position)); // Position
             glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)offsetof(ShapeVertex, normal)); // Normal
-            glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)offsetof(ShapeVertex, texCoords)); // Texture
+            //glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)offsetof(ShapeVertex, texCoords)); // Texture
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     //Debind VAO
     glBindVertexArray(0);

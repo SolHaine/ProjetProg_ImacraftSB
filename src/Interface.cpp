@@ -177,7 +177,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         ImGui::End();
     }
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 }
 
 bool Interface::isMouseOnInterface() const {
