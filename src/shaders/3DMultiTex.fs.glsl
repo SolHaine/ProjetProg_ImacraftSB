@@ -7,6 +7,7 @@ in vec3 vTexCoords;
 in vec3 vColor;
 flat in int vTexture;
 in vec3 vVertexPosition;
+in vec3 vVertexNormal;
 
 // Uniform variables
 uniform samplerCube uTextures[32];
@@ -18,14 +19,14 @@ uniform bool uDirectionnalLight;
 out vec4 fFragColor;
 
 float directionnalLightInfluence(vec3 lightDir) {
-	float luminosityDirLight = max(-dot(vNormal, lightDir), 0.0);
+	float luminosityDirLight = max(-dot(vVertexNormal, lightDir), 0.0);
 	return luminosityDirLight;
 }
 
 float ponctualLightInfluence(vec3 lightPos) {
 	vec3 dir = normalize(vVertexPosition-lightPos);
 	float d = length(vVertexPosition - lightPos);
-	float luminosityPointLight = max(-dot(vNormal, dir), 0.)/(d*d);
+	float luminosityPointLight = max(-dot(vVertexNormal, dir), 0.)/(d*d);
 	return luminosityPointLight;
 }
 

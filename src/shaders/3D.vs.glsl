@@ -20,6 +20,7 @@ out vec3 vTexCoords;
 out vec3 vColor;
 flat out int vTexture;
 out vec3 vVertexPosition;
+out vec3 vVertexNormal;
 
 void main() {
 	// Homogeneous coordinates
@@ -37,4 +38,5 @@ void main() {
     gl_Position = uMVPMatrix * vertexPosition;
 
     vVertexPosition = vertexPosition.xyz;
+    vVertexNormal = aVertexNormal;
 }
