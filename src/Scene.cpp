@@ -219,6 +219,7 @@ int Scene::saveScene(const std::string &filename) const {
     }
     // close file
     myFile.close();
+    std::cout << "Scene successfully saved" << std::endl;
     return EXIT_SUCCESS;
 }
 
@@ -248,6 +249,7 @@ int Scene::loadScene(const std::string &filename) {
     myFile.close();
     s_vertices = vertices;
     updateScene();
+    std::cout << "Scene successfully loaded" << std::endl;
     return EXIT_SUCCESS;
 }
 

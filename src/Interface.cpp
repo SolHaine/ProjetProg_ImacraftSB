@@ -63,26 +63,21 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
 
     if(ImGui::BeginPopup("Open")) {
         ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
-        if (ImGui::Button("Open scene", sizeButtons)) {
-            std::string test;
-            std::cout << "enter file name : ";
-            std::cin >> test;
-            scene.loadScene(test);
+
+        static char fileName[128] = "";
+        bool input = ImGui::InputTextWithHint("", "enter file name", fileName, sizeof(fileName), ImGuiInputTextFlags_EnterReturnsTrue);
+        if (ImGui::Button("Open scene", sizeButtons) || input) {
+            std::string fileNameStg(fileName);
+            scene.loadScene(fileNameStg);
         }
         ImGui::EndPopup();
     }
-
     if(ImGui::BeginPopup("Save")) {
         ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
-        char fileName[128] = "";
-        if (ImGui::InputTextWithHint("", "enter file name", fileName, sizeof(fileName))) {
-        // input doesn't work, have to name the file in the terminal
-            std::cout << "test : " << i_io.KeyMap[ImGuiKey_Backspace] << std::endl;
-        }
-        if (ImGui::Button("Save scene", sizeButtons)) {
-            // std::string test;
-            // std::cout << "enter file name : ";
-            // std::cin >> test;
+        static char fileName[128] = "";
+        bool input = ImGui::InputTextWithHint("", "enter file name", fileName, sizeof(fileName), ImGuiInputTextFlags_EnterReturnsTrue);
+        
+        if (ImGui::Button("Save scene", sizeButtons) || input) {
             std::string fileNameStg(fileName);
             scene.saveScene(fileNameStg);
         }
@@ -196,7 +191,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     }
 
 
-    //ImGui::ShowDemoWindow();
+    // ImGui::ShowDemoWindow();
 }
 
 bool Interface::isMouseOnInterface() const {

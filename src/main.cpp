@@ -82,6 +82,7 @@ int main(int argc, char** argv) {
         // Event loop:
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
+            ImGui_ImplSDL2_ProcessEvent(&e);
 
             // Leave the loop after this iteration
             if(e.type == SDL_QUIT){
@@ -96,47 +97,48 @@ int main(int argc, char** argv) {
 
             // Camera and cursor move with keyboard keys
             if(e.type == SDL_KEYDOWN) {
-                ImGui::GetIO().AddInputCharacter(e.key.keysym.sym);
-                switch(e.key.keysym.sym) {
-                    // Z key to move forward
-                    case SDLK_z: zPressed = true;
-                    break;
-                    // S key to move backward
-                    case SDLK_s: sPressed = true;
-                    break;
-                    // Q key to move forward
-                    case SDLK_q: qPressed = true;
-                    break;
-                    // D key to move backward
-                    case SDLK_d: dPressed = true;
-                    break;
-                    // A key to move up
-                    case SDLK_a: aPressed = true;
-                    break;
-                    // E key to move down
-                    case SDLK_e: ePressed = true;
-                    break;
-                    // O key to move cursor backwards
-                    case SDLK_o: cursor.moveFront(-1, scene);
-                    break;
-                    // L key to move cursor forward
-                    case SDLK_l: cursor.moveFront(1, scene);
-                    break;
-                    // K key to move cursor left
-                    case SDLK_k: cursor.moveLeft(1, scene);
-                    break;
-                    // M key to move cussor right
-                    case SDLK_m: cursor.moveLeft(-1, scene);
-                    break;
-                    // I key to move cursor up
-                    case SDLK_i: cursor.moveUp(1, scene);
-                    break;
-                    // P key to move cursor down
-                    case SDLK_p: cursor.moveUp(-1, scene);
-                    break;
+                if(!ImGui::GetIO().WantCaptureKeyboard) {
+                    switch(e.key.keysym.sym) {
+                        // Z key to move forward
+                        case SDLK_z: zPressed = true;
+                        break;
+                        // S key to move backward
+                        case SDLK_s: sPressed = true;
+                        break;
+                        // Q key to move forward
+                        case SDLK_q: qPressed = true;
+                        break;
+                        // D key to move backward
+                        case SDLK_d: dPressed = true;
+                        break;
+                        // A key to move up
+                        case SDLK_a: aPressed = true;
+                        break;
+                        // E key to move down
+                        case SDLK_e: ePressed = true;
+                        break;
+                        // O key to move cursor backwards
+                        case SDLK_o: cursor.moveFront(-1, scene);
+                        break;
+                        // L key to move cursor forward
+                        case SDLK_l: cursor.moveFront(1, scene);
+                        break;
+                        // K key to move cursor left
+                        case SDLK_k: cursor.moveLeft(1, scene);
+                        break;
+                        // M key to move cussor right
+                        case SDLK_m: cursor.moveLeft(-1, scene);
+                        break;
+                        // I key to move cursor up
+                        case SDLK_i: cursor.moveUp(1, scene);
+                        break;
+                        // P key to move cursor down
+                        case SDLK_p: cursor.moveUp(-1, scene);
+                        break;
 
-                    default: 
-                    break;
+                        default: 
+                        break;
+                    }
                 }
             }
 
