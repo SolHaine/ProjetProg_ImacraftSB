@@ -5,9 +5,12 @@ void Lights::switchDayNight() {
 }
 
 void Lights::addPonctualLight(const glm::vec3 &position) {
-	if(asAlreadyLight(position)==-1) {
+	if((asAlreadyLight(position)==-1) && (l_nbPonctualLights<100)) {
 		l_ponctualLightsPositions.push_back(position);
 		l_nbPonctualLights++;
+	}
+	if(l_nbPonctualLights>=100) {
+		std::cout << "Reached maxial number of ponctual lights." << std::endl;
 	}
 }
 
@@ -16,6 +19,11 @@ void Lights::removePonctualLight(const glm::vec3 &position) {
 		l_ponctualLightsPositions.erase(l_ponctualLightsPositions.begin()+asAlreadyLight(position));
 		l_nbPonctualLights--;
 	}
+}
+
+void Lights::removeAllPonctualLight() {
+	l_ponctualLightsPositions.clear();
+	l_nbPonctualLights = 0;
 }
 
 std::vector<glm::vec3> Lights::getPonctualLightsPositions() const {

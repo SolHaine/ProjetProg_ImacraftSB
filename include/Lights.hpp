@@ -16,6 +16,7 @@ class Lights {
 		void switchDayNight();
 		void addPonctualLight(const glm::vec3 &position);
 		void removePonctualLight(const glm::vec3 &position);
+		void removeAllPonctualLight();
 		std::vector<glm::vec3> getPonctualLightsPositions() const;
 		int getNbPonctualLights() const;
 		bool isDay() const;

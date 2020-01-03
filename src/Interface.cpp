@@ -173,7 +173,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     if (ImGui::Begin("Lightbox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
-        ImGui::SetWindowSize(ImVec2(185, 125));
+        ImGui::SetWindowSize(ImVec2(185, 145));
         ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
 
         // Lights
@@ -186,6 +186,9 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         }
         if (ImGui::Button("Remove ponctual light", sizeButtons)) {
             lights.removePonctualLight(cursor.getPosition());
+        }
+        if (ImGui::Button("Reset lights", sizeButtons)) {
+            lights.removeAllPonctualLight();
         }
 
 
