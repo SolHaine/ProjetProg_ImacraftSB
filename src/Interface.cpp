@@ -69,6 +69,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         if (ImGui::Button("Open scene", sizeButtons) || input) {
             std::string fileNameStg(fileName);
             scene.loadScene(fileNameStg);
+            ImGui::CloseCurrentPopup();
         }
         ImGui::EndPopup();
     }
@@ -80,6 +81,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         if (ImGui::Button("Save scene", sizeButtons) || input) {
             std::string fileNameStg(fileName);
             scene.saveScene(fileNameStg);
+            ImGui::CloseCurrentPopup();
         }
         ImGui::EndPopup();
     }
