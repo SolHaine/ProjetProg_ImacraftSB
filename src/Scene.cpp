@@ -1,7 +1,6 @@
 #include "../include/Scene.hpp"
 
-Scene::Scene(const Texture &t, const uint width, const uint height) : s_width(width), s_height(height) {
-    texture = t;
+Scene::Scene(const Texture &t, const uint width, const uint height) : s_width(width), s_height(height), texture(t) {
 
     // Create VBO (Vertex Buffer Object)
     glGenBuffers(1, &s_vbo);
@@ -45,7 +44,8 @@ void Scene::createSceneFlat() {
         for (int j = -(s_height/2); j < (s_height/2); ++j){
             addCube(glm::vec3(i, -1, j), glm::vec3(0, 0, 0), "grass");
             addCube(glm::vec3(i, -2, j), glm::vec3(0, 0, 0), "stone");
-            addCube(glm::vec3(i, -3, j), glm::vec3(0, 0, 0), "diamond");
+            addCube(glm::vec3(i, -3, j), glm::vec3(0, 0, 0), "stone");
+            addCube(glm::vec3(i, -4, j), glm::vec3(0, 0, 0), "bedrock");
         }
     }
 };
@@ -252,11 +252,6 @@ int Scene::loadScene(const std::string &filename) {
     std::cout << "Scene successfully loaded" << std::endl;
     return EXIT_SUCCESS;
 }
-
-// void Scene::freeBuffersScene() {
-//     glDeleteVertexArrays(1, &s_vao);
-//     glDeleteBuffers(1, &s_vbo);
-// }
 
 // for(int i = 0; i < s_vertices.size(); ++i){
 //     std::cout << s_vertices[i].s_cubesTexture << std::endl;

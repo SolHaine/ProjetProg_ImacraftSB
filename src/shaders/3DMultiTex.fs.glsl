@@ -10,7 +10,7 @@ in vec3 vVertexPosition;
 in vec3 vVertexNormal;
 
 // Uniform variables
-uniform samplerCube uTextures[32];
+uniform samplerCube uTextures[100];
 uniform int uNbPonctualLights;
 uniform vec3 uPonctualLights[100];
 uniform bool uDirectionnalLight;

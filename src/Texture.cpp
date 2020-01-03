@@ -19,15 +19,49 @@ Texture::Texture() {
     for (uint i = 0; i < directoriesCubeTextures.size(); i++) {
         std::vector<std::string> filenames(6);
         std::string filenameCubeTexture = directoriesCubeTextures[i].string() + "/" + directoriesCubeTextures[i].filename().string();
-        filenames[0] = filenameCubeTexture + ".png";
-        filenames[1] = filenameCubeTexture + ".png";
-        filenames[2] = (boost::filesystem::exists(filenameCubeTexture + "_top.png")) ? filenameCubeTexture + "_top.png" : filenameCubeTexture + ".png";
-        filenames[3] = (boost::filesystem::exists(filenameCubeTexture + "_bottom.png")) ? filenameCubeTexture + "_bottom.png" : filenameCubeTexture + ".png";
-        filenames[4] = (boost::filesystem::exists(filenameCubeTexture + "_front.png")) ?  filenameCubeTexture + "_front.png" : filenameCubeTexture + ".png";
-        filenames[5] = (boost::filesystem::exists(filenameCubeTexture + "_back.png")) ?  filenameCubeTexture + "_back.png" : filenameCubeTexture + ".png";
+        
+        filenames[0] = (boost::filesystem::exists(filenameCubeTexture + "_side.png")) ? filenameCubeTexture + "_side.png" : filenameCubeTexture + ".png";
+        
+        filenames[1] = (boost::filesystem::exists(filenameCubeTexture + "_side.png")) ? filenameCubeTexture + "_side.png" : filenameCubeTexture + ".png";
+        
+        if (boost::filesystem::exists(filenameCubeTexture + "_top.png")) {
+            filenames[2] = filenameCubeTexture + "_top.png";
+        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+            filenames[2] = filenameCubeTexture + "_side.png";
+        } else {
+            filenames[2] = filenameCubeTexture + ".png";
+        }
+
+        if (boost::filesystem::exists(filenameCubeTexture + "_bottom.png")) {
+            filenames[3] = filenameCubeTexture + "_bottom.png";
+        } else if (boost::filesystem::exists(filenameCubeTexture + "_top.png")) {
+            filenames[3] = filenameCubeTexture + "_top.png";
+        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+            filenames[3] = filenameCubeTexture + "_side.png";
+        } else {
+            filenames[3] = filenameCubeTexture + ".png";
+        }
+
+        if (boost::filesystem::exists(filenameCubeTexture + "_front.png")) {
+            filenames[4] = filenameCubeTexture + "_front.png";
+        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+            filenames[4] = filenameCubeTexture + "_side.png";
+        } else {
+            filenames[4] = filenameCubeTexture + ".png";
+        }
+
+        if (boost::filesystem::exists(filenameCubeTexture + "_back.png")) {
+            filenames[5] = filenameCubeTexture + "_back.png";
+        } else if (boost::filesystem::exists(filenameCubeTexture + "_front.png")) {
+            filenames[5] = filenameCubeTexture + "_front.png";
+        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+            filenames[5] = filenameCubeTexture + "_side.png";
+        } else {
+            filenames[5] = filenameCubeTexture + ".png";
+        }
+
         addCubeTexture(filenames, directoriesCubeTextures[i].filename().string());
     }  
-
 }
 
 Texture::~Texture() {
