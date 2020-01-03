@@ -18,6 +18,7 @@ uniform bool uDirectionnalLight;
 // Shader outputs
 out vec4 fFragColor;
 
+// Lights functions
 float directionnalLightInfluence(vec3 lightDir) {
 	float luminosityDirLight = max(-dot(vVertexNormal, lightDir), 0.0);
 	return luminosityDirLight;
@@ -31,12 +32,15 @@ float ponctualLightInfluence(vec3 lightPos) {
 }
 
 void main() {
+	// Ambiant light
 	float luminosity = 0.3;
+	// Day or night
 	if(uDirectionnalLight) {
 		vec3 dir = vec3(5, -10, 5);
 		dir = normalize(dir);
-		luminosity += directionnalLightInfluence(dir);
+		luminosity += directionnalLightInfluence(dir)/3;
 	}
+	// Ponctual lights
 	for(int i=0; i<uNbPonctualLights; i++) {
 		luminosity += ponctualLightInfluence(uPonctualLights[i]);
 	}

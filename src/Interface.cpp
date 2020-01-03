@@ -133,16 +133,6 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
             scene.changeTextureCube(cursor.getPosition(), 0);
         }
 
-        // Lights
-        ImGui::NewLine();
-        ImGui::TextWrapped("Light:");
-        if (ImGui::Button("Switch day/night", sizeButtons)) {
-            lights.switchDayNight();
-        }
-        if (ImGui::Button("Add ponctual light", sizeButtons)) {
-            lights.addPonctualLight(cursor.getPosition());
-        }
-
         ImGui::End();
     }
 
@@ -176,6 +166,32 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
 
         ImGui::End();
     }
+
+    // Lightbox
+    corner = 1;
+    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, (corner & 2) ? i_io.DisplaySize.y - distance : distance);
+    window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    if (ImGui::Begin("Lightbox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+        ImGui::SetWindowSize(ImVec2(185, 125));
+        ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
+
+        // Lights
+        ImGui::TextWrapped("Light:");
+        if (ImGui::Button("Switch day/night", sizeButtons)) {
+            lights.switchDayNight();
+        }
+        if (ImGui::Button("Add ponctual light", sizeButtons)) {
+            lights.addPonctualLight(cursor.getPosition());
+        }
+        if (ImGui::Button("Remove ponctual light", sizeButtons)) {
+            lights.removePonctualLight(cursor.getPosition());
+        }
+
+
+        ImGui::End();
+    }
+
 
     //ImGui::ShowDemoWindow();
 }

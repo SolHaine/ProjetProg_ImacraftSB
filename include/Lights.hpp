@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 
+// Keep the informations for all lights in the scene
 class Lights {
 	private:
         bool l_directionnalLight;
@@ -13,8 +14,10 @@ class Lights {
         Lights() : l_directionnalLight(true), l_nbPonctualLights(0) {};
         ~Lights() = default;      
 		void switchDayNight();
-		void addPonctualLight(glm::vec3 position);
+		void addPonctualLight(const glm::vec3 &position);
+		void removePonctualLight(const glm::vec3 &position);
 		std::vector<glm::vec3> getPonctualLightsPositions() const;
 		int getNbPonctualLights() const;
 		bool isDay() const;
+		int asAlreadyLight(const glm::vec3 &position) const;
 };

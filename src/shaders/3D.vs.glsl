@@ -37,6 +37,7 @@ void main() {
     // Projected position
     gl_Position = uMVPMatrix * vertexPosition;
 
+    // Output values for lightning
     vVertexPosition = vertexPosition.xyz;
     vVertexNormal = aVertexNormal;
 }
