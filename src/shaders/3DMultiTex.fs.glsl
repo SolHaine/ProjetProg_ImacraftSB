@@ -48,7 +48,7 @@ void main() {
 	luminosity = min(luminosity, 1);
 	if(vTexture != 0) {
 		vec4 color = texture(uTextures[vTexture], vTexCoords);
-		fFragColor = vec4(color.xyz*luminosity, 1);
+		fFragColor = vec4(color.xyz*luminosity, color.w);
 	} else if(vColor != vec3(0, 0, 0)) {
 		fFragColor = vec4(vColor*luminosity, 1);
 	} else {
