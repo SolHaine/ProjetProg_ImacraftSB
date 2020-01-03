@@ -13,9 +13,10 @@ Texture::Texture() {
     std::vector<boost::filesystem::path> directoriesCubeTextures;
     for(auto &p : boost::filesystem::directory_iterator(pathCubeTextures)){ 
         if(is_directory(p)){
-            directoriesCubeTextures.push_back(p.path());
+            directoriesCubeTextures.push_back(p.path().string());
         }
     }
+    std::sort(directoriesCubeTextures.begin(), directoriesCubeTextures.end());
     for (uint i = 0; i < directoriesCubeTextures.size(); i++) {
         std::vector<std::string> filenames(6);
         std::string filenameCubeTexture = directoriesCubeTextures[i].string() + "/" + directoriesCubeTextures[i].filename().string();
@@ -59,7 +60,6 @@ Texture::Texture() {
         } else {
             filenames[5] = filenameCubeTexture + ".png";
         }
-
         addCubeTexture(filenames, directoriesCubeTextures[i].filename().string());
     }  
 }
