@@ -253,6 +253,7 @@ int Scene::loadScene(const std::string &filename) {
     return EXIT_SUCCESS;
 }
 
-// for(int i = 0; i < s_vertices.size(); ++i){
-//     std::cout << s_vertices[i].s_cubesTexture << std::endl;
-// }
+void Scene::resetScene() {
+    s_vertices.clear();
+    createSceneFlat();
+}

@@ -34,8 +34,9 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     const float distance = 5.0f;
     static uint radioSelect = 0;
 
-    // Menu bar
     std::string menu_action = "";
+
+    // Menu bar
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open..", "Ctrl+O")) {
@@ -56,6 +57,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         }
         ImGui::EndMainMenuBar();
     }
+
     if(menu_action == "open") { ImGui::OpenPopup("Open"); }
     if(menu_action == "save") { ImGui::OpenPopup("Save"); }
 
@@ -137,7 +139,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     if (ImGui::Begin("Texturebox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
-        ImGui::SetWindowSize(ImVec2(240, 175));
+        ImGui::SetWindowSize(ImVec2(230, 175));
         
         for (uint i = 0; i < texture.getCubeReferences().size(); i++) {
             bool popColor = false;
@@ -168,7 +170,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     if (ImGui::Begin("Lightbox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
-        ImGui::SetWindowSize(ImVec2(185, 125));
+        ImGui::SetWindowSize(ImVec2(185, 145));
         ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
 
         // Lights
@@ -185,6 +187,26 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
             lights.removeAllPonctualLight();
         }
 
+        ImGui::End();
+    }
+
+    // World
+    corner = 1;
+    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance)+150);
+    window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    if (ImGui::Begin("World", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+        ImGui::SetWindowSize(ImVec2(185, 85));
+        ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
+
+        if (ImGui::Button("Generate new world", sizeButtons)) {
+            scene.resetScene();
+            scene.createSceneRbfInterpolation();
+        }
+
+        if (ImGui::Button("Flat world", sizeButtons)) {
+            scene.resetScene();
+        }
 
         ImGui::End();
     }

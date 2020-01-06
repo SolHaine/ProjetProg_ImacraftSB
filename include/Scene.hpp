@@ -45,6 +45,7 @@ class Scene {
         void changeTextureCube(const glm::vec3 position, const uint textureId = 0);
         int saveScene(const std::string &filename) const;
         int loadScene(const std::string &filename);
+        void resetScene();
 
 };
         
