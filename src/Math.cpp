@@ -3,8 +3,21 @@
 /* RADIAL BASIS FUNCTIONS */
 
 double phi(const double x) {
-	// Most simple, used for now (maybe phi could be inline)
-	return x;
+	// // linéaire
+	// return x;
+
+	// // multiquadratique
+	// double epsilon = 1e-4;
+	// return sqrt(1+ epsilon*epsilon*x*x);
+
+
+	// // inverse quadratique
+	// double epsilon = 1e-3;
+	// return 1/(1+epsilon*epsilon*x*x);
+
+	// gaussienne
+	double epsilon = 1e-2;
+	return exp(-epsilon*x*x);
 }
 
 void solver(RbfElts &elts) {
