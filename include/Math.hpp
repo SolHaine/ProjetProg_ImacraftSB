@@ -11,7 +11,7 @@
 
 /* RADIAL BASIS FUNCTIONS */
 
-void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &controlPoints, Eigen::VectorXd &weights);
+void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &controlPoints, Eigen::VectorXd &weights, const int width);
 
 struct RbfElts {
 	int m_nbControlPoints;
@@ -19,9 +19,9 @@ struct RbfElts {
 	Eigen::VectorXd m_weights;
 	Eigen::VectorXd m_coeff;
 
-	RbfElts(const int nbControlPoints) {
+	RbfElts(const int nbControlPoints, const int width) {
 		m_nbControlPoints = nbControlPoints;
-		genRandomControlPoints(m_nbControlPoints, m_controlPoints, m_weights);
+		genRandomControlPoints(m_nbControlPoints, m_controlPoints, m_weights, width);
 	}		
 };
 

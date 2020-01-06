@@ -52,19 +52,23 @@ void Scene::createSceneFlat() {
 
 //Radial basis function
 void Scene::createSceneRbfInterpolation() {
-    RbfElts elts(3);
+    RbfElts elts(6, s_width);
     solver(elts);
+
     // Create interpolated scene
     for (int i = -(s_width/2); i < (s_width/2); ++i){
         for (int j = -(s_height/2); j < (s_height/2); ++j){
             glm::vec3 position = glm::vec3(i, 0, j);
             double weight = radialBasisFunction(elts, position);
             if(weight > 0) {
-                for(int k = 0; k < int(floor(weight)); ++k) {
+                for(int k = 0; k < int(weight); ++k) {
                     extrudeCube(position);
                 }
             } else if(weight < 0) {
-                for(int k = 0; k < int(floor(-weight)); ++k) {
+                if(weight < -3) {
+                    weight = -3;
+                }
+                for(int k = 0; k < int(-weight); ++k) {
                     digCube(position);
                 }
             }

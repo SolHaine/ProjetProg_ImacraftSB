@@ -6,18 +6,18 @@ double phi(const double x) {
 	// // linéaire
 	// return x;
 
-	// // multiquadratique
-	// double epsilon = 1e-4;
-	// return sqrt(1+ epsilon*epsilon*x*x);
+	// multiquadratique
+	double epsilon = 5;
+	return sqrt(1+ epsilon*epsilon*x*x);
 
 
 	// // inverse quadratique
-	// double epsilon = 1e-3;
+	// double epsilon = 0.1;
 	// return 1/(1+epsilon*epsilon*x*x);
 
-	// gaussienne
-	double epsilon = 1e-2;
-	return exp(-epsilon*x*x);
+	// // gaussienne
+	// double epsilon = 0.04;
+	// return exp(-epsilon*x*x);
 }
 
 void solver(RbfElts &elts) {
@@ -40,7 +40,7 @@ double radialBasisFunction(const RbfElts &elts, glm::vec3 x) {
 	return weight;
 }
 
-void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &controlPoints, Eigen::VectorXd &weights) {
+void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &controlPoints, Eigen::VectorXd &weights, const int width) {
 	
 	// Select seed from time
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -50,7 +50,7 @@ void genRandomControlPoints(const int nbControlPoints, std::vector<glm::vec3> &c
 
 	// Control points
 	// Uniform int distribution
-	std::uniform_int_distribution<int> uniformIntDistribution(-15, 15);
+	std::uniform_int_distribution<int> uniformIntDistribution(-width/2, width/2);
 	for(int i=0; i<nbControlPoints; i++) {
 	   	int x = uniformIntDistribution(generator);
 	   	int y = uniformIntDistribution(generator);
