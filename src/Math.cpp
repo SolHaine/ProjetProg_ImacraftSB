@@ -10,7 +10,6 @@ double phi(const double x) {
 	double epsilon = 5;
 	return sqrt(1+ epsilon*epsilon*x*x);
 
-
 	// // inverse quadratique
 	// double epsilon = 0.1;
 	// return 1/(1+epsilon*epsilon*x*x);

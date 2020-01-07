@@ -28,6 +28,8 @@ make
 bin/ImacraftSB
 ```
 
+L'exécutable est dans le dossier /bin.
+
 ## Commandes
 
 * Echap : quitter
@@ -58,3 +60,4 @@ bin/ImacraftSB
 ## Bon à savoir
 
 * Documentation (dont rapport) : /doc
+* Scènes sauvegardés : /bin/savedScenes

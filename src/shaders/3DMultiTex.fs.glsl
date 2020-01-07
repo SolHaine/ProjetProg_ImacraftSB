@@ -32,6 +32,7 @@ float ponctualLightInfluence(vec3 lightPos) {
 }
 
 void main() {
+
 	// Ambiant light
 	float luminosity = 0.5;
 	// Day or night
@@ -46,6 +47,7 @@ void main() {
 		luminosity += ponctualLightInfluence(uPonctualLights[i]);
 	}
 	luminosity = min(luminosity, 1);
+	
 	if(vTexture != 0) {
 		vec4 color = texture(uTextures[vTexture], vTexCoords);
 		fFragColor = vec4(color.xyz*luminosity, color.w);

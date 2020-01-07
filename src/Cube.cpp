@@ -39,7 +39,7 @@ Cube::Cube() {
             glm::vec3(-0.5f,  0.5f,  0.5f),
             glm::vec3(0.5f,  0.5f,  0.5f),
             glm::vec3(0.5f,  0.5f, -0.5f),
-            // Bot face 
+            // Bottom face 
             glm::vec3(-0.5f, -0.5f, -0.5f),
             glm::vec3(0.5f, -0.5f, -0.5f),
             glm::vec3(0.5f, -0.5f,  0.5f),
@@ -71,7 +71,7 @@ Cube::Cube() {
             glm::vec3(0.0f,  1.0f,  0.0f),
             glm::vec3(0.0f,  1.0f,  0.0f),
             glm::vec3(0.0f,  1.0f,  0.0f),
-            // Bot face 
+            // Bottom face 
             glm::vec3(0.0f, -1.0f,  0.0f),
             glm::vec3(0.0f, -1.0f,  0.0f),
             glm::vec3(0.0f, -1.0f,  0.0f),
@@ -145,14 +145,9 @@ Cube::Cube() {
         // Enable normale attribute VAO
         const GLuint VERTEX_ATTR_NORMAL = 1;
         glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
-        // Enable texture attribute VAO
-        // const GLuint VERTEX_ATTR_TEXCOORDS = 2;
-        // glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS);
-        // Specify the format of the vertex
         glBindBuffer(GL_ARRAY_BUFFER, c_vbo);
             glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)offsetof(ShapeVertex, position)); // Position
             glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)offsetof(ShapeVertex, normal)); // Normal
-            //glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)offsetof(ShapeVertex, texCoords)); // Texture
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     //Debind VAO
     glBindVertexArray(0);
