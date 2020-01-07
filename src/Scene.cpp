@@ -10,13 +10,13 @@ Scene::Scene(const Texture &t, const uint width, const uint height) : s_width(wi
     // Bind VAO
     glBindVertexArray(s_vao);
         // Enable scene position attribute VAO
-        const GLuint VERTEX_ATTR_SCENEPOSITION = 3;
+        const GLuint VERTEX_ATTR_SCENEPOSITION = 2;
         glEnableVertexAttribArray(VERTEX_ATTR_SCENEPOSITION);
         // Enable color attribute VAO
-        const GLuint VERTEX_ATTR_SCENECOLOR = 4;
+        const GLuint VERTEX_ATTR_SCENECOLOR = 3;
         glEnableVertexAttribArray(VERTEX_ATTR_SCENECOLOR);
         // Enable texture attribute VAO
-        const GLuint VERTEX_ATTR_SCENETEXTURE = 5;
+        const GLuint VERTEX_ATTR_SCENETEXTURE = 4;
         glEnableVertexAttribArray(VERTEX_ATTR_SCENETEXTURE);
         // Specify the format of the vertex
         glBindBuffer(GL_ARRAY_BUFFER, s_vbo);
@@ -27,11 +27,13 @@ Scene::Scene(const Texture &t, const uint width, const uint height) : s_width(wi
             glVertexAttribPointer(VERTEX_ATTR_SCENETEXTURE, 1, GL_FLOAT, GL_FALSE, sizeof(ShapeVertexScene), (const GLvoid*)offsetof(ShapeVertexScene, s_cubesTexture)); // Texture
             glVertexAttribDivisor(VERTEX_ATTR_SCENETEXTURE, 1);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //Debind VAO
+    // Debind VAO
     glBindVertexArray(0);
 
+    // Create first scene
     createSceneFlat();
     createSceneRbfInterpolation();
+
 }
 
 Scene::~Scene() {
@@ -54,7 +56,6 @@ void Scene::createSceneFlat() {
 void Scene::createSceneRbfInterpolation() {
     RbfElts elts(6, s_width);
     solver(elts);
-
     // Create interpolated scene
     for (int i = -(s_width/2); i < (s_width/2); ++i){
         for (int j = -(s_height/2); j < (s_height/2); ++j){
@@ -203,14 +204,14 @@ void Scene::changeTextureCube(const glm::vec3 position, const uint textureId){
 }
 
 int Scene::saveScene(const std::string &filename, const Lights &lights) const {
-    //open file
+    // Open file
     std::ofstream myFile;
     myFile.open("./bin/savedScenes/"+filename, std::ios::out | std::ios::binary);
     if(!myFile.is_open()) {
         std::cerr << "error : can not create file : " << filename << std::endl;
         return EXIT_FAILURE;
     }
-    // write the vector size and data
+    // Write the vector size and data
     myFile << s_vertices.size() << std::endl;
     for(size_t i=0; i<s_vertices.size(); ++i) {
         myFile << s_vertices[i].s_cubesPositions.x << " ";
@@ -221,7 +222,7 @@ int Scene::saveScene(const std::string &filename, const Lights &lights) const {
         myFile << s_vertices[i].s_cubesColors.b << " ";
         myFile << s_vertices[i].s_cubesTexture << " ";
     }
-    // save light information
+    // Save light information
     myFile << lights.isDay() << " ";
     myFile << lights.getNbPonctualLights() << " ";
     std::vector<glm::vec3> ponctualLights = lights.getPonctualLightsPositions();
@@ -230,24 +231,24 @@ int Scene::saveScene(const std::string &filename, const Lights &lights) const {
         myFile << ponctualLights[i].y << " ";
         myFile << ponctualLights[i].z << " ";
     }
-    // close file
+    // Close file
     myFile.close();
     std::cout << "Scene successfully saved" << std::endl;
     return EXIT_SUCCESS;
 }
 
 int Scene::loadScene(const std::string &filename, Lights &lights) {
-    // open file
+    // Open file
     std::ifstream myFile;
     myFile.open("./bin/savedScenes/"+filename, std::ios::in | std::ios::binary);
     if(!myFile.is_open()) {
         std::cerr << "error : can not read file : " << filename << std::endl;
         return EXIT_FAILURE;
     }
-    // read the vector size
+    // Read the vector size
     size_t nbCubes;
     myFile >> nbCubes;
-    // reconstruct scene
+    // Reconstruct scene
     std::vector<ShapeVertexScene> vertices(nbCubes);
     for(size_t i=0; i<nbCubes; ++i) {
         myFile >> vertices[i].s_cubesPositions.x;
@@ -258,7 +259,7 @@ int Scene::loadScene(const std::string &filename, Lights &lights) {
         myFile >> vertices[i].s_cubesColors.b;
         myFile >> vertices[i].s_cubesTexture;
     }
-    // load lights
+    // Load lights
     bool day;
     myFile >> day;
     if(day != lights.isDay()) {
@@ -275,7 +276,7 @@ int Scene::loadScene(const std::string &filename, Lights &lights) {
         lights.addPonctualLight(position);
     }    
 
-    // close file
+    // Close file
     myFile.close();
     s_vertices = vertices;
     updateScene();

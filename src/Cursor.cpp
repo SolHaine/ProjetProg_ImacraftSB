@@ -86,10 +86,10 @@ Cursor::Cursor(Scene &s) {
         const GLuint VERTEX_ATTR_VERTEXPOSITION = 0;
         glEnableVertexAttribArray(VERTEX_ATTR_VERTEXPOSITION);
         // Enable scene position attribute VAO
-        const GLuint VERTEX_ATTR_SCENEPOSITION = 3;
+        const GLuint VERTEX_ATTR_SCENEPOSITION = 2;
         glEnableVertexAttribArray(VERTEX_ATTR_SCENEPOSITION);
         // // Enable color = attribute VAO
-        const GLuint VERTEX_ATTR_COLOR = 4;
+        const GLuint VERTEX_ATTR_COLOR = 3;
         glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
         // Specify the format of the vertex
         glBindBuffer(GL_ARRAY_BUFFER, r_vbo);
@@ -101,7 +101,7 @@ Cursor::Cursor(Scene &s) {
             glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GL_FLOAT), 0); // Color
             glVertexAttribDivisor(VERTEX_ATTR_COLOR, 1);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //Debind VAO
+    // Debind VAO
     glBindVertexArray(0);
 }
 

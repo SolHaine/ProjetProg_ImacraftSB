@@ -33,34 +33,23 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
 
     const float distance = 5.0f;
     static uint radioSelect = 0;
-
     std::string menu_action = "";
 
     // Menu bar
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Open..", "Ctrl+O")) {
+            if (ImGui::MenuItem("Open..")) {
                 menu_action = "open";
-                // std::string test;
-                // std::cout << "enter file name : ";
-                // std::cin >> test;
-                // scene.loadScene(test);
             }
-            if (ImGui::MenuItem("Save", "Ctrl+S")) {
+            if (ImGui::MenuItem("Save")) {
                 menu_action = "save";
-                // std::string test;
-                // std::cout << "enter file name : ";
-                // std::cin >> test;
-                // scene.saveScene(test);
             }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
-
     if(menu_action == "open") { ImGui::OpenPopup("Open"); }
     if(menu_action == "save") { ImGui::OpenPopup("Save"); }
-
     if(ImGui::BeginPopup("Open")) {
         ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
 
@@ -85,7 +74,6 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         }
         ImGui::EndPopup();
     }
-
 
     // Toolbox
     int corner = 3;
@@ -170,7 +158,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     if (ImGui::Begin("Lightbox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
-        ImGui::SetWindowSize(ImVec2(185, 145));
+        ImGui::SetWindowSize(ImVec2(185, 135));
         ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
 
         // Lights
@@ -190,12 +178,12 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         ImGui::End();
     }
 
-    // World
+    // Worldbox
     corner = 1;
-    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance)+150);
+    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance)+140);
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-    if (ImGui::Begin("World", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+    if (ImGui::Begin("Worldbox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
         ImGui::SetWindowSize(ImVec2(185, 85));
         ImVec2 sizeButtons = ImVec2(ImGui::GetWindowSize().x-16.0f, 0.0f);
 
@@ -211,8 +199,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         ImGui::End();
     }
 
-
-    // ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 }
 
 bool Interface::isMouseOnInterface() const {

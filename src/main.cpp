@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
             ImGui_ImplSDL2_ProcessEvent(&e);
 
             // Leave the loop after this iteration
-            if(e.type == SDL_QUIT){
+            if(e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
                 done = true;
             }
 
@@ -183,7 +183,7 @@ int main(int argc, char** argv) {
         // Choose program
         view.useView();
 
-        // Definition of view matrix
+        // Definition of matrix
         glm::mat4 MMatrix;
         glm::mat4 ViewMatrix = Camera.getViewMatrix();
         glm::mat4 MVMatrix = ViewMatrix * MMatrix;

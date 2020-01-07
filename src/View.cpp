@@ -1,7 +1,7 @@
 #include "../include/View.hpp"
 
-View::View(const FilePath& applicationPath) : m_program(loadProgram(applicationPath.dirPath() + "shaders/3D.vs.glsl",
-                              										applicationPath.dirPath() + "shaders/3DMultiTex.fs.glsl")) {
+View::View(const FilePath& applicationPath) : m_program(loadProgram(applicationPath.dirPath() + "../shaders/3D.vs.glsl",
+                              										applicationPath.dirPath() + "../shaders/3DMultiTex.fs.glsl")) {
         m_uMVPMatrix = glGetUniformLocation(m_program.getGLId(), "uMVPMatrix");
         m_uMVMatrix = glGetUniformLocation(m_program.getGLId(), "uMVMatrix");
         m_uNormalMatrix = glGetUniformLocation(m_program.getGLId(), "uNormalMatrix");

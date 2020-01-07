@@ -67,5 +67,6 @@ target_link_libraries(${PROJECT_NAME} ${ALL_LIBRARIES})
 ####################################### Copies  #####################################
 ######################################################################################
 
-file(COPY src/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+file(COPY src/savedScenes DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+file(COPY src/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
