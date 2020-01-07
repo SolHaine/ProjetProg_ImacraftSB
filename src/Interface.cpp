@@ -202,10 +202,12 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         if (ImGui::Button("Generate new world", sizeButtons)) {
             scene.resetScene();
             scene.createSceneRbfInterpolation();
+            lights.removeAllPonctualLight();
         }
 
         if (ImGui::Button("Flat world", sizeButtons)) {
             scene.resetScene();
+            lights.removeAllPonctualLight();
         }
 
         ImGui::End();
