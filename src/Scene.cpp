@@ -202,7 +202,7 @@ void Scene::changeTextureCube(const glm::vec3 position, const uint textureId){
     }
 }
 
-int Scene::saveScene(const std::string &filename) const {
+int Scene::saveScene(const std::string &filename, const Lights &lights) const {
     //open file
     std::ofstream myFile;
     myFile.open("./bin/savedScenes/"+filename, std::ios::out | std::ios::binary);
@@ -221,13 +221,22 @@ int Scene::saveScene(const std::string &filename) const {
         myFile << s_vertices[i].s_cubesColors.b << " ";
         myFile << s_vertices[i].s_cubesTexture << " ";
     }
+    // save light information
+    myFile << lights.isDay() << " ";
+    myFile << lights.getNbPonctualLights() << " ";
+    std::vector<glm::vec3> ponctualLights = lights.getPonctualLightsPositions();
+    for(size_t i=0; i<lights.getNbPonctualLights(); i++) {
+        myFile << ponctualLights[i].x << " ";
+        myFile << ponctualLights[i].y << " ";
+        myFile << ponctualLights[i].z << " ";
+    }
     // close file
     myFile.close();
     std::cout << "Scene successfully saved" << std::endl;
     return EXIT_SUCCESS;
 }
 
-int Scene::loadScene(const std::string &filename) {
+int Scene::loadScene(const std::string &filename, Lights &lights) {
     // open file
     std::ifstream myFile;
     myFile.open("./bin/savedScenes/"+filename, std::ios::in | std::ios::binary);
@@ -249,6 +258,23 @@ int Scene::loadScene(const std::string &filename) {
         myFile >> vertices[i].s_cubesColors.b;
         myFile >> vertices[i].s_cubesTexture;
     }
+    // load lights
+    bool day;
+    myFile >> day;
+    if(day != lights.isDay()) {
+        lights.switchDayNight();
+    }
+    lights.removeAllPonctualLight();
+    glm::vec3 position;
+    int nbLights;
+    myFile >> nbLights;
+    for(int i=0; i<nbLights; i++) {
+        myFile >> position.x;
+        myFile >> position.y;
+        myFile >> position.z;
+        lights.addPonctualLight(position);
+    }    
+
     // close file
     myFile.close();
     s_vertices = vertices;

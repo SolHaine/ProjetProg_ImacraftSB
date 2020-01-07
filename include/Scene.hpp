@@ -6,6 +6,7 @@
 #include "../include/Cube.hpp"
 #include "../include/Math.hpp"
 #include "../include/Texture.hpp"
+#include "../include/Lights.hpp"
 
 using namespace glimac;
 
@@ -43,8 +44,8 @@ class Scene {
         void changeColorCube(const glm::vec3 position, const glm::vec3 color = glm::vec3(0, 0, 0));
         void changeTextureCube(const glm::vec3 position, const std::string textureName = "no_texture");
         void changeTextureCube(const glm::vec3 position, const uint textureId = 0);
-        int saveScene(const std::string &filename) const;
-        int loadScene(const std::string &filename);
+        int saveScene(const std::string &filename, const Lights &lights) const;
+        int loadScene(const std::string &filename, Lights &lights);
         void resetScene();
 
 };
