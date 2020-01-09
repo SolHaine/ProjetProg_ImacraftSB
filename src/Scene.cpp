@@ -66,8 +66,8 @@ void Scene::createSceneRbfInterpolation() {
                     extrudeCube(position);
                 }
             } else if(weight < 0) {
-                if(weight < -3) {
-                    weight = -3;
+                if(weight < -4) {
+                    weight = -4;
                 }
                 for(int k = 0; k < int(-weight); ++k) {
                     digCube(position);

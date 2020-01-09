@@ -50,3 +50,7 @@ glm::mat4 FreeFlyCamera::getViewMatrix() const {
     glm::mat4 MVMatrix = glm::lookAt(m_Position, m_Position + m_FrontVector, m_UpVector);
     return MVMatrix;
 }
+
+float FreeFlyCamera::getPhi() const {
+    return std::fmod(m_fPhi, 2*M_PI);
+}

@@ -111,24 +111,6 @@ int main(int argc, char** argv) {
                         // D key to move backward
                         case SDLK_d: dPressed = true;
                         break;
-                        // A key to move up
-                        case SDLK_a: aPressed = true;
-                        break;
-                        // E key to move down
-                        case SDLK_e: ePressed = true;
-                        break;
-                        // O key to move cursor backwards
-                        case SDLK_o: cursor.moveFront(-1, scene);
-                        break;
-                        // L key to move cursor forward
-                        case SDLK_l: cursor.moveFront(1, scene);
-                        break;
-                        // K key to move cursor left
-                        case SDLK_k: cursor.moveLeft(1, scene);
-                        break;
-                        // M key to move cussor right
-                        case SDLK_m: cursor.moveLeft(-1, scene);
-                        break;
                         // I key to move cursor up
                         case SDLK_i: cursor.moveUp(1, scene);
                         break;
@@ -138,6 +120,85 @@ int main(int argc, char** argv) {
 
                         default: 
                         break;
+                    }
+
+                    // Cursor moves correctly for the user according to the camera rotation
+                    float phi = Camera.getPhi();
+                    if((phi>M_PI*0.75)&&(phi<M_PI*1.25)||(phi<-M_PI*0.75)&&(phi>-M_PI*1.25)) {
+                        switch(e.key.keysym.sym) {
+                            // O key to move cursor backwards
+                            case SDLK_o: cursor.moveFront(-1, scene);
+                            break;
+                            // L key to move cursor forward
+                            case SDLK_l: cursor.moveFront(1, scene);
+                            break;
+                            // K key to move cursor left
+                            case SDLK_k: cursor.moveLeft(1, scene);
+                            break;
+                            // M key to move cussor right
+                            case SDLK_m: cursor.moveLeft(-1, scene);
+                            break;
+
+                            default: 
+                            break;
+                        }
+                    }
+                    if((phi>M_PI*1.25)&&(phi<M_PI*1.75)||(phi<-M_PI*0.25)&&(phi>-M_PI*0.75)) {
+                        switch(e.key.keysym.sym) {
+                            // O key to move cursor backwards
+                            case SDLK_o: cursor.moveLeft(1, scene);
+                            break;
+                            // L key to move cursor forward
+                            case SDLK_l: cursor.moveLeft(-1, scene);
+                            break;
+                            // K key to move cursor left
+                            case SDLK_k: cursor.moveFront(1, scene);
+                            break;
+                            // M key to move cussor right
+                            case SDLK_m: cursor.moveFront(-1, scene);
+                            break;
+
+                            default: 
+                            break;
+                        }
+                    }
+                    if((phi>M_PI*0.25)&&(phi<M_PI*0.75) || (phi<-M_PI*1.25)&&(phi>-M_PI*1.75)) {
+                        switch(e.key.keysym.sym) {
+                            // O key to move cursor backwards
+                            case SDLK_o: cursor.moveLeft(-1, scene);
+                            break;
+                            // L key to move cursor forward
+                            case SDLK_l: cursor.moveLeft(1, scene);
+                            break;
+                            // K key to move cursor left
+                            case SDLK_k: cursor.moveFront(-1, scene);
+                            break;
+                            // M key to move cussor right
+                            case SDLK_m: cursor.moveFront(1, scene);
+                            break;
+
+                            default: 
+                            break;
+                        }
+                    }
+                    if((((phi>0)&&(phi<M_PI*0.25))||((phi>1.75*M_PI)&&(phi<M_PI*2))) || (((phi<0)&&(phi>-M_PI*0.25))||((phi<-M_PI*1.75)&&(phi>-M_PI*2)))) {
+                        switch(e.key.keysym.sym) {
+                            // O key to move cursor backwards
+                            case SDLK_o: cursor.moveFront(1, scene);
+                            break;
+                            // L key to move cursor forward
+                            case SDLK_l: cursor.moveFront(-1, scene);
+                            break;
+                            // K key to move cursor left
+                            case SDLK_k: cursor.moveLeft(-1, scene);
+                            break;
+                            // M key to move cussor right
+                            case SDLK_m: cursor.moveLeft(1, scene);
+                            break;
+
+                            default: 
+                            break;
+                        }
                     }
                 }
             }
