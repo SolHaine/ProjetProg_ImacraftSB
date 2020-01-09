@@ -32,19 +32,20 @@ L'exécutable est dans le dossier /bin.
 
 ## Commandes
 
-* Echap : quitter
-* Caméra :
-	* Z / Q / S / D : déplacer la caméra horizontalement et verticalement
-	* A / E : déplacer la caméra en hauteur
-	* Clic gauche + glisser : tourner la caméra
-* Curseur :
-	* O / K / L / M : déplacer le curseur horizontalement et verticalement
-	* I / P : déplacer le curseur en hauteur
-* Interface :
-	* Fenêtre bas-droit (Toolbox) : ajouter / supprimer un cube, extruder / creuser, choisir une couleur pour le prochain cube ajouté, ajouter / supprimer la couleur du cube sélectionné, ajouter / supprimer la texture du cube sélectionné
-	* Fenêtre bas-gauche (Texturebox) : choisir une texture pour le prochain cube ajouté
-	* Fenêtre haut-droit (Lightbox) : intervertir entre le jour et la nuit, ajouter / supprimer des lumières ponctuelles, réinitialiser les lumières
-	* Barre de menu (en haut) : sauvegarder / charger une scène (dans /bin/savedScenes)
+* Echap : quitter
+* Caméra :
+	* Z / Q / S / D : déplacer la caméra horizontalement et verticalement
+	* A / E : déplacer la caméra en hauteur
+	* Clic gauche + glisser : tourner la caméra
+* Curseur :
+	* O / K / L / M : déplacer le curseur horizontalement et verticalement
+	* I / P : déplacer le curseur en hauteur
+* Interface :
+	* Fenêtre bas-droit (Toolbox) : ajouter/supprimer un cube, extruder/creuser, choisir une couleur pour le prochain cube ajouté, ajouter/supprimer la couleur du cube sélectionné, ajouter/supprimer la texture du cube sélectionné
+	* Fenêtre bas-gauche (Texturebox) : choisir une texture pour le prochain cube ajouté
+	* Fenêtre haut-droit (Lightbox) : changer entre le jour et la nuit, ajouter/supprimer des lumières ponctuelles, réinitialiser les lumières
+	* Fenêtre haut-droit 2 (Worldbox) : générer un nouveau monde aléatoire, générer un nouveau monde plat
+	* Barre de menu (en haut) : sauvegarder/charger une scène (dans/bin/savedScenes)
 
 ## Version
 
