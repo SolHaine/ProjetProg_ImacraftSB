@@ -117,6 +117,12 @@ int main(int argc, char** argv) {
                         // P key to move cursor down
                         case SDLK_p: cursor.moveUp(-1, scene);
                         break;
+                        // A key to move up
+                        case SDLK_a: aPressed = true;
+                        break;
+                        // E key to move down
+                        case SDLK_e: ePressed = true;
+                        break;
 
                         default: 
                         break;
