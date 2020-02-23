@@ -123,7 +123,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
 
     // Texturebox
     corner = 2;
-    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, (corner & 2) ? i_io.DisplaySize.y - distance : distance);
+    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance));
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     if (ImGui::Begin("Texturebox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
@@ -154,7 +154,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
 
     // Lightbox
     corner = 1;
-    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, (corner & 2) ? i_io.DisplaySize.y - distance : distance);
+    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance)+20);
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     if (ImGui::Begin("Lightbox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
@@ -180,7 +180,7 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
 
     // Worldbox
     corner = 1;
-    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance)+140);
+    window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance)+160);
     window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     if (ImGui::Begin("Worldbox", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
@@ -201,6 +201,16 @@ void Interface::drawInterface(Scene &scene, const Cursor &cursor, const Texture 
         ImGui::End();
     }
 
+    // FPS
+    // corner = 0;
+    // window_pos = ImVec2((corner & 1) ? i_io.DisplaySize.x - distance : distance, ((corner & 2) ? i_io.DisplaySize.y - distance : distance)+20);
+    // window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+    // ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    // if (ImGui::Begin("FPS", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse)) {
+    //     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    //     ImGui::End();
+    // }
+    
     //ImGui::ShowDemoWindow();
 }
 

@@ -7,7 +7,7 @@
 ## Prérequis
 
 Le programme fonctionne sur Linux. 
-Assurez-vous d'avoir SDL 2.0, OpenGL 3.3, GLEW, Eigen 3 et Boost.
+Assurez-vous d'avoir SDL 2.0, OpenGL 3.3, GLEW et Eigen 3.
 
 ```
 sudo apt-get update
@@ -15,7 +15,6 @@ sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
 sudo apt-get install libsdl2-dev
 sudo apt-get install libglew-dev
 sudo apt-get install libeigen3-dev
-sudo apt-get install libboost-all-dev
 ```
 
 ## Démarrer
@@ -49,7 +48,7 @@ L'exécutable est dans le dossier /bin.
 
 ## Version
 
-1.0 *- janvier 2020*
+1.1 *- février 2020*
 
 ## Crédits
 

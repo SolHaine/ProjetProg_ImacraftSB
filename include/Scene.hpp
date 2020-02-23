@@ -2,6 +2,7 @@
 #include <glimac/common.hpp>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 #include "../include/Cube.hpp"
 #include "../include/Math.hpp"

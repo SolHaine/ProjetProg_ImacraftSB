@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
 
     // Initialize SDL and open a window
     SDLWindowManager windowManager(1024, 768, "ImacraftSB");
+    SDL_GL_SetSwapInterval(1);
 
     // Initialize glew for OpenGL3+ support
     GLenum glewInitError = glewInit();
@@ -73,11 +74,15 @@ int main(int argc, char** argv) {
     * APPLICATION LOOP
     *********************************/
     
-    bool done = false;
-    bool zPressed = false, sPressed = false, qPressed = false, dPressed = false, aPressed = false, ePressed = false;
-    float speed = 0.001;
+    static bool done = false;
+    static bool zPressed = false, sPressed = false, qPressed = false, dPressed = false, aPressed = false, ePressed = false;
+    static const float speed = 0.1;
+    static const Uint32 FPS = 60;
+    static const Uint32 FRAMERATE_MILLISECONDS = 1000/60;
 
     while(!done) {
+        // Time
+        Uint32 startTime = SDL_GetTicks();
 
         // Event loop:
         SDL_Event e;
@@ -277,6 +282,12 @@ int main(int argc, char** argv) {
 
         // Update the display
         windowManager.swapBuffers();
+
+        // Time
+        Uint32 elapsedTime = SDL_GetTicks() - startTime;
+        if(elapsedTime < FRAMERATE_MILLISECONDS){
+            SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
+        }
 
     }
 

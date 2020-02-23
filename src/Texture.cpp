@@ -1,8 +1,8 @@
 #include "../include/Texture.hpp"
 
 Texture::Texture() {
-
-    boost::filesystem::path pathCubeTextures("assets/textures/cube_textures");
+    
+    std::experimental::filesystem::path pathCubeTextures("assets/textures/cube_textures");
 
     // Add no_texture
     std::string filenameNoTexture = pathCubeTextures.string() + "/no_texture.png";
@@ -10,8 +10,8 @@ Texture::Texture() {
     t_cubeReferences.push_back({"no_texture", (GLuint)0, textureRadio});
 
     // Add textures in "cube_textures" directory
-    std::vector<boost::filesystem::path> directoriesCubeTextures;
-    for(auto &p : boost::filesystem::directory_iterator(pathCubeTextures)){ 
+    std::vector<std::experimental::filesystem::path> directoriesCubeTextures;
+    for(auto &p : std::experimental::filesystem::directory_iterator(pathCubeTextures)){ 
         if(is_directory(p)){
             directoriesCubeTextures.push_back(p.path().string());
         }
@@ -21,41 +21,41 @@ Texture::Texture() {
         std::vector<std::string> filenames(6);
         std::string filenameCubeTexture = directoriesCubeTextures[i].string() + "/" + directoriesCubeTextures[i].filename().string();
         
-        filenames[0] = (boost::filesystem::exists(filenameCubeTexture + "_side.png")) ? filenameCubeTexture + "_side.png" : filenameCubeTexture + ".png";
+        filenames[0] = (std::experimental::filesystem::exists(filenameCubeTexture + "_side.png")) ? filenameCubeTexture + "_side.png" : filenameCubeTexture + ".png";
         
-        filenames[1] = (boost::filesystem::exists(filenameCubeTexture + "_side.png")) ? filenameCubeTexture + "_side.png" : filenameCubeTexture + ".png";
+        filenames[1] = (std::experimental::filesystem::exists(filenameCubeTexture + "_side.png")) ? filenameCubeTexture + "_side.png" : filenameCubeTexture + ".png";
         
-        if (boost::filesystem::exists(filenameCubeTexture + "_top.png")) {
+        if (std::experimental::filesystem::exists(filenameCubeTexture + "_top.png")) {
             filenames[2] = filenameCubeTexture + "_top.png";
-        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+        } else if (std::experimental::filesystem::exists(filenameCubeTexture + "_side.png")) {
             filenames[2] = filenameCubeTexture + "_side.png";
         } else {
             filenames[2] = filenameCubeTexture + ".png";
         }
 
-        if (boost::filesystem::exists(filenameCubeTexture + "_bottom.png")) {
+        if (std::experimental::filesystem::exists(filenameCubeTexture + "_bottom.png")) {
             filenames[3] = filenameCubeTexture + "_bottom.png";
-        } else if (boost::filesystem::exists(filenameCubeTexture + "_top.png")) {
+        } else if (std::experimental::filesystem::exists(filenameCubeTexture + "_top.png")) {
             filenames[3] = filenameCubeTexture + "_top.png";
-        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+        } else if (std::experimental::filesystem::exists(filenameCubeTexture + "_side.png")) {
             filenames[3] = filenameCubeTexture + "_side.png";
         } else {
             filenames[3] = filenameCubeTexture + ".png";
         }
 
-        if (boost::filesystem::exists(filenameCubeTexture + "_front.png")) {
+        if (std::experimental::filesystem::exists(filenameCubeTexture + "_front.png")) {
             filenames[4] = filenameCubeTexture + "_front.png";
-        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+        } else if (std::experimental::filesystem::exists(filenameCubeTexture + "_side.png")) {
             filenames[4] = filenameCubeTexture + "_side.png";
         } else {
             filenames[4] = filenameCubeTexture + ".png";
         }
 
-        if (boost::filesystem::exists(filenameCubeTexture + "_back.png")) {
+        if (std::experimental::filesystem::exists(filenameCubeTexture + "_back.png")) {
             filenames[5] = filenameCubeTexture + "_back.png";
-        } else if (boost::filesystem::exists(filenameCubeTexture + "_front.png")) {
+        } else if (std::experimental::filesystem::exists(filenameCubeTexture + "_front.png")) {
             filenames[5] = filenameCubeTexture + "_front.png";
-        } else if (boost::filesystem::exists(filenameCubeTexture + "_side.png")) {
+        } else if (std::experimental::filesystem::exists(filenameCubeTexture + "_side.png")) {
             filenames[5] = filenameCubeTexture + "_side.png";
         } else {
             filenames[5] = filenameCubeTexture + ".png";

@@ -3,11 +3,12 @@
 #include <glimac/common.hpp>
 #include <glimac/Image.hpp>
 
-#include <boost/filesystem.hpp>
+#include <experimental/filesystem>
 
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 using namespace glimac;
 
